@@ -1,0 +1,60 @@
+﻿@model List<string>
+@*@foreach (var item in Model)
+    {
+        <p> @item  </p>
+    }*@
+@for (int i = 0, j = 0; i < Model.Count; i++)
+{
+    if (j == 8)
+    {
+        j = 0;
+    }
+    if (j == 0)
+    {
+        <h4>@Model[i]</h4>
+        j++;
+        continue;
+    }
+    else if (j == 1)
+    {
+        <img src=@Model[i] width="250" height="300" alt=" " />
+        <br>
+        j++;
+        continue;
+    }
+    else if (j == 2)
+    {
+
+        <p><b>Original language: </b>@Model[i]</p>
+        j++;
+        continue;
+    }
+    else if (j == 3)
+    {
+        <p><b>Description: </b>@Model[i]</p>
+        j++; continue;
+    }
+    else if (j == 4)
+    {
+        <p><b>Popularity: </b>@Model[i]</p>
+        j++; continue;
+    }
+    else if (j == 5)
+    {
+        <p><b>Release Date: </b>@Model[i]</p>
+        j++; continue;
+    }
+
+    else if (j == 6)
+    {
+        <p><b>Average Vote: </b>@Model[i]</p>
+        j++; continue;
+    }
+    else if (j == 7)
+    {
+        <p><b>Count of Votes: </b>@Model[i]</p>
+        j++; continue;
+    }
+
+}
+@*https://image.tmdb.org/t/p/w500/f02FFv77Rh62633YEjimv7C6JM3.jpg*@

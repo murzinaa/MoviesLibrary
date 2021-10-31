@@ -57,7 +57,7 @@ namespace MoviesLibrary.Controllers
         {
             string apikey = "efc923dfbeb80bd974570be62f1057bc";
             string url = string.Format("https://api.themoviedb.org/3/search/movie?query={0}&api_key={1}", title, apikey);
-            return View("Result", _apiMovieProvider.GetMovieList(url));
+            return View("Views/Movie/Movie.cshtml", _apiMovieProvider.GetMovieList(url));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

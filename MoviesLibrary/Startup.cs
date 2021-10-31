@@ -1,7 +1,11 @@
 using APIProviders;
+using DataAccess;
+using DataAccess.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +29,11 @@ namespace MoviesLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAPIMovieProvider, MovieProvider>();
+            services.AddDbContext<MovieContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<UserRegistration, IdentityRole>()
+                .AddEntityFrameworkStores<MovieContext>();
             services.AddControllersWithViews();
         }
 
@@ -45,8 +54,9 @@ namespace MoviesLibrary
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

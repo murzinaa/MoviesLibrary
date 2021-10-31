@@ -6,8 +6,8 @@ namespace DataAccess.Entities
 {
     public class Movie
     {
-        public int ID { get; set; }
-        public int GenreID { get; set; }
+        public int Id { get; set; }
+        //public int GenreID { get; set; }
         public string Title { get; set; }
         public double AverageVote { get; set; }
         public int CountOfVotes { get; set; }

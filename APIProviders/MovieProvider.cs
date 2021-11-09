@@ -33,100 +33,53 @@ namespace APIProviders
 
             }
             return ResultsArray;
-            //List<string> ResultsArray = new List<string> { };
-            //using (WebClient client = new WebClient())
-            //{
-
-            //    string json = client.DownloadString(url);
-
-            //    MovieResult filmInfo = JsonConvert.DeserializeObject<MovieResult>(json);
-            //    MovieModel rslt = new MovieModel();
-
-            //    for (int i = 0; i < filmInfo.results.Count; i++)
-            //    {
-            //        rslt.id = Convert.ToString(filmInfo.results[i].id);
-            //        rslt.original_language = filmInfo.results[i].original_language;
-            //        rslt.original_title = filmInfo.results[i].original_title;
-            //        rslt.overview = filmInfo.results[i].overview;
-            //        rslt.popularity = filmInfo.results[i].popularity;
-            //        rslt.release_date = filmInfo.results[i].release_date;
-            //        rslt.title = filmInfo.results[i].title;
-            //        rslt.vote_average = filmInfo.results[i].vote_average;
-            //        rslt.vote_count = filmInfo.results[i].vote_count;
-            //        rslt.backdrop_path = filmInfo.results[i].poster_path ?? "No picture";
-            //        ResultsArray.Add(rslt.title);
-            //        if (rslt.backdrop_path == "No picture")
-            //        {
-            //            ResultsArray.Add("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png");
-            //        }
-            //        else
-            //        {
-            //            ResultsArray.Add("https://image.tmdb.org/t/p/original" + rslt.backdrop_path);
-            //        }
-
-            //        ResultsArray.Add(rslt.original_language);
-            //        ResultsArray.Add(rslt.overview);
-            //        ResultsArray.Add(rslt.popularity);
-            //        ResultsArray.Add(rslt.release_date);
-            //        ResultsArray.Add(rslt.vote_average);
-            //        ResultsArray.Add(rslt.vote_count);
-
-
-
-            //    }
-
-            //}
-            //return ResultsArray;
+           
 
         }
 
-        //public async Task<MovieResult> GetMoviesList(string url)
-        //{
-        //    List<string> ResultsArray = new List<string> { };
-        //    using (WebClient client = new WebClient())
-        //    {
+        public List<string> GetMovieListById(string url)
+        {
+            List<string> ResultsArray = new List<string> { };
+            using (WebClient client = new WebClient())
+            {
 
-        //        //string json = await client.DownloadStringAsync(new Uri(url));
-        //        //Root filmInfo = System.Text.Json.JsonSerializer.Deserialize<Root>(json);
-        //        MovieResult filmInfo = JsonConvert.DeserializeObject<MovieResult>(json);
-        //        MovieModel rslt = new MovieModel();
-        //        //string[,] ResultsArray = new string[filmInfo.results.Count, 9];
+                string json = client.DownloadString(url);
 
-        //        for (int i = 0; i < filmInfo.results.Count; i++)
-        //        {
-        //            rslt.id = Convert.ToString(filmInfo.results[i].id);
-        //            rslt.original_language = filmInfo.results[i].original_language;
-        //            rslt.original_title = filmInfo.results[i].original_title;
-        //            rslt.overview = filmInfo.results[i].overview;
-        //            rslt.popularity = filmInfo.results[i].popularity;
-        //            rslt.release_date = filmInfo.results[i].release_date;
-        //            rslt.title = filmInfo.results[i].title;
-        //            rslt.vote_average = filmInfo.results[i].vote_average;
-        //            rslt.vote_count = filmInfo.results[i].vote_count;
-        //            rslt.backdrop_path = filmInfo.results[i].poster_path ?? "No picture";
-        //            ResultsArray.Add(rslt.title);
-        //            if (rslt.backdrop_path == "No picture")
-        //            {
-        //                ResultsArray.Add("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png");
-        //            }
-        //            else
-        //            {
-        //                ResultsArray.Add("https://image.tmdb.org/t/p/original" + rslt.backdrop_path);
-        //            }
+                MovieResultById filmInfo = JsonConvert.DeserializeObject<MovieResultById>(json);
+                MovieResultById rslt = new MovieResultById();
 
-        //            ResultsArray.Add(rslt.original_language);
-        //            ResultsArray.Add(rslt.overview);
-        //            ResultsArray.Add(rslt.popularity);
-        //            ResultsArray.Add(rslt.release_date);
-        //            ResultsArray.Add(rslt.vote_average);
-        //            ResultsArray.Add(rslt.vote_count);
+
+                rslt.id = filmInfo.id;
+                rslt.original_language = filmInfo.original_language;
+                rslt.overview = filmInfo.overview;
+                rslt.popularity = filmInfo.popularity;
+                rslt.release_date = filmInfo.release_date;
+                rslt.title = filmInfo.title;
+                rslt.vote_average = filmInfo.vote_average;
+                rslt.vote_count = filmInfo.vote_count;
+                rslt.backdrop_path = filmInfo.poster_path ?? "No picture";
+                ResultsArray.Add(rslt.title);
+                if (rslt.backdrop_path == "No picture")
+                {
+                    ResultsArray.Add("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png");
+                }
+                else
+                {
+                    ResultsArray.Add("https://image.tmdb.org/t/p/original" + rslt.backdrop_path);
+                }
+
+                ResultsArray.Add(rslt.original_language);
+                ResultsArray.Add(rslt.overview);
+                ResultsArray.Add(rslt.popularity);
+                ResultsArray.Add(rslt.release_date);
+                ResultsArray.Add(rslt.vote_average);
+                ResultsArray.Add(rslt.vote_count);
 
 
 
-        //        }
 
-        //        return ResultsArray;
-        //    }
-        //}
+            }
+            return ResultsArray;
+        }
     }
 }

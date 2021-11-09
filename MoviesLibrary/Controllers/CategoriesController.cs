@@ -1,6 +1,14 @@
 ﻿using APIProviders;
+using BusinessLogic;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Utils;
+using DataAccess;
+using DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MoviesLibrary.Models;
 using Newtonsoft.Json;
 using System;
@@ -9,6 +17,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using static BusinessLogic.Utils.Constants;
 
 namespace MoviesLibrary.Controllers
 {
@@ -16,103 +25,75 @@ namespace MoviesLibrary.Controllers
     {
         private readonly ILogger<CategoriesController> _logger;
         private readonly IAPIMovieProvider _apiMovieProvider;
+        private readonly ICategoriesService _categoriesService;
         private readonly string apikey = "efc923dfbeb80bd974570be62f1057bc";
         private MovieProvider movieProvider = new MovieProvider();
+        private readonly MovieContext db;
+        private readonly UserManager<UserRegistration> _manager;
 
-        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider)
+        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, MovieContext context, ICategoriesService categoriesService, UserManager<UserRegistration> manager)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
+            _categoriesService = categoriesService;
+
+            db = context;
+            _manager = manager;
         }
 
         public IActionResult Action()
         {
-            //string apikey = "efc923dfbeb80bd974570be62f1057bc";
-            int genreID = 28;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
-
+            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Action))));
         }
 
         public IActionResult Adventure()
         {
-            int genreID = 12;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
-
+            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Adventure))));
         }
 
         public IActionResult Animation()
         {
-            int genreID = 16;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Movie", movieProvider.GetMovieList(url));
+            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Animation))));
         }
 
         public IActionResult Comedy()
         {
-            int genreID = 35;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Comedy))));
         }
 
         public IActionResult Crime()
         {
-            int genreID = 80;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Crime))));
         }
 
         public IActionResult Drama()
-        {
-            int genreID = 18;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Drama))));
         }
 
         public IActionResult Documentary()
-        {
-            int genreID = 99;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Documentary))));
         }
 
         public IActionResult Fantasy()
-        {
-            int genreID = 14;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Fantasy))));
         }
 
         public IActionResult Horror()
-        {
-            int genreID = 27;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Horror))));
         }
 
         public IActionResult Romance()
-        {
-
-            int genreID = 10749;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Romance))));
         }
 
         public IActionResult Thriller()
-        {
-            int genreID = 53;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Thriller))));
         }
 
         public IActionResult Western()
-        {
-            int genreID = 37;
-            string url = String.Format("https://api.themoviedb.org/3/discover/movie?api_key={0}&with_genres={1}&page=1", apikey, genreID);
-            return View("Views/Movie/Movie.cshtml", movieProvider.GetMovieList(url));
+        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Westerm))));
         }
+
 
         [HttpGet]
         public IActionResult MovieResult()
@@ -124,13 +105,22 @@ namespace MoviesLibrary.Controllers
         [HttpPost]
         public IActionResult MovieResult(string movie)
         {
-
-            //string apikey = "efc923dfbeb80bd974570be62f1057bc";
-            MovieProviderById movieProviderById = new MovieProviderById();
-            string url = string.Format("https://api.themoviedb.org/3/movie/{0}?api_key={1}", movie, apikey);
-            return View("Views/Home/Result.cshtml", movieProviderById.GetMovieList(url));
-            //return (View(movie));
+            return View("Views/Home/Result.cshtml", _apiMovieProvider.GetMovieListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
         }
+
+        //private async Task<UserRegistration> GetCurrentUser()
+        //{
+        //    return await _manager.GetUserAsync(HttpContext.User);
+        //}
+
+        //    // Generic demo method.
+        //    //public async Task DemoMethod()
+        //    //{
+        //    //    var user = await GetCurrentUser();
+        //    //    string userEmail = user.Email; // Here you gets user email 
+        //    //    string userId = user.Id;
+        //    //}
+
         [HttpGet]
         public IActionResult AddToFavourite()
         {
@@ -139,11 +129,34 @@ namespace MoviesLibrary.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToFavourite(string movie)
+        public async Task AddToFavourite(string movie)
         {
+            //var user = await GetCurrentUser();
+            ////int userId = int.Parse(user.Id);
 
-            return View();
+            //var optionsBuilder = new DbContextOptionsBuilder<MovieContext>();
+
+            //var options = optionsBuilder
+            //        .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MoviesLibrary;Trusted_Connection=True;")
+            //        .Options;
+            //using (MovieContext db = new MovieContext(options))
+            //{
+            //    Movie movie1 = new Movie { Title = movie };
+            //    //FavouriteMovie favouriteMovie = new FavouriteMovie { MovieId = 1, UserId = 2 };
+            //    db.Movies.Add(movie1);
+            //    User user1 = new User {UserName = user.UserName, FullName = "vasya Vasya"};
+            //    db.Users.Add(user1);
+            //    db.SaveChanges();
+
+            //    FavouriteMovie favouriteMovie = new FavouriteMovie {UserId=user1.Id, MovieId=movie1.Id };
+                
+            //    db.FavouriteMovies.Add(favouriteMovie);
+
+            //    db.SaveChanges();
+
+            //}
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

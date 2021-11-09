@@ -1,18 +1,16 @@
 using APIProviders;
+using BusinessLogic;
+using BusinessLogic.Interfaces;
 using DataAccess;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace MoviesLibrary
 {
@@ -21,6 +19,7 @@ namespace MoviesLibrary
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -29,10 +28,12 @@ namespace MoviesLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAPIMovieProvider, MovieProvider>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<UserRegistration, IdentityRole>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MovieContext>();
             services.AddControllersWithViews();
         }

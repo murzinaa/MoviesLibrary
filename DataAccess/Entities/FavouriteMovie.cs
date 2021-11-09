@@ -1,15 +1,32 @@
-﻿using System;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.ComponentModel.DataAnnotations;
+//using System.Text;
+
+//namespace DataAccess.Entities
+//{
+//    public class FavouriteMovie
+//    {
+//        public int MovieId{ get; set; }
+//        public List<User> Users{ get; set; }
+//        //public int UserId { get; set; }
+
+//    }
+//}
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace DataAccess.Entities
 {
     public class FavouriteMovie
     {
-        [Key]
-        public int MovieId{ get; set; }
+        public int Id { get; set; }
+        public int MovieId { get; set; }
         public int UserId { get; set; }
-        
+
+        public virtual Movie Movie { get; set; }
+        public virtual User User { get; set; }
     }
 }

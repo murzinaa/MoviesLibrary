@@ -8,6 +8,6 @@ namespace BusinessLogic.Interfaces
     public interface ICommentService
     {
         public Comment Create(Comment comment);
-        public Comment GetByUserId(int userId);
+        public Comment GetCommentByUserId(int userId);
     }
 }

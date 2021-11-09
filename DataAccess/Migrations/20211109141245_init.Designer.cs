@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20211031113221_AddedRegistration")]
-    partial class AddedRegistration
+    [Migration("20211109141245_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,11 @@ namespace DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(2000)");
 
-                    b.Property<int>("MoiveId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MovieId")
+                    b.Property<int>("MovieId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -42,26 +41,31 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex(new[] { "MovieId" }, "IDX_MOVIE");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IDX_USER");
 
                     b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.FavouriteMovie", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("MovieId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "MovieId" }, "IDX_MOVIE1");
+
+                    b.HasIndex(new[] { "UserId" }, "IDX_USER1");
 
                     b.ToTable("FavouriteMovie");
                 });
@@ -73,23 +77,10 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AverageVote")
-                        .HasColumnType("float");
-
-                    b.Property<int>("CountOfVotes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Overview")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Popularity")
-                        .HasColumnType("float");
-
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -104,10 +95,14 @@ namespace DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(25)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
@@ -316,12 +311,16 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entities.Comment", b =>
                 {
                     b.HasOne("DataAccess.Entities.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId");
+                        .WithMany("Comments")
+                        .HasForeignKey("MovieId")
+                        .HasConstraintName("FK_COMMENT_REFERENCE_MOVIE")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
+                        .HasConstraintName("FK_COMMENT_REFERENCE_USER")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -332,11 +331,21 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.FavouriteMovie", b =>
                 {
-                    b.HasOne("DataAccess.Entities.User", null)
-                        .WithMany("FavourtiteMovies")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("DataAccess.Entities.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .HasConstraintName("FK_FAVOURIT_REFERENCE_MOVIE")
                         .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_FAVOURIT_REFERENCE_USER")
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -390,11 +399,14 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.Movie", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.User", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("FavourtiteMovies");
                 });
 #pragma warning restore 612, 618
         }

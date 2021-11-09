@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BusinessLogic
 {
-    public class CommentService : ICommentService
+    public class CommentService  //ICommentService
     {
         private readonly MovieContext context;
         public CommentService(MovieContext context)

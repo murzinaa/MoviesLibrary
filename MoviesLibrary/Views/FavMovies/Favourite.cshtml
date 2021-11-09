@@ -1,5 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿
+@model List<List<string>>
+
+@for (int i = 0, j = 0; i < Model.Count; i ++)
+{
+    <form method="post">
+        <input type="hidden" name="movie" value=@Model[i][1] />
+        <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult">@Model[i][0]</button>
+
+    </form>
 }

@@ -7,8 +7,9 @@ namespace BusinessLogic.Interfaces
 {
    public  interface IFavouriteMovieService
     {
-        public FavouriteMovie Create(FavouriteMovie favouriteMovie);
-        public FavouriteMovie GetByUserId(int userId);
-        // public IEnumerable<FavouriteMovie> GetAll();
+        void AddFavouriteMovie(FavouriteMovie favouriteMovie);
+        //avouriteMovie GetByUserId(int userId);
+        List<FavouriteMovie> GetByUserId(int userId);
+
     }
 }

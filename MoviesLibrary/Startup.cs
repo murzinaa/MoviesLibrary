@@ -29,6 +29,9 @@ namespace MoviesLibrary
         {
             services.AddTransient<IAPIMovieProvider, MovieProvider>();
             services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IMovieService, MovieService>();
+            services.AddTransient<IFavouriteMovieService, FavouriteMovieService>();
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

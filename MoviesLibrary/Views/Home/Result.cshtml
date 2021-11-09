@@ -5,7 +5,7 @@
     }*@
 @for (int i = 0, j = 0; i < Model.Count; i++)
 {
-    if (j == 8)
+    if (j == 9)
     {
         j = 0;
     }
@@ -58,6 +58,14 @@
 
 }
 <form method="POST">
-    <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="AddToFavourite" >Add to favourite</button>
-</form>
+    <input type="hidden" name="movie" value=@Model[8] />
+    <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="AddToFavourite">Add to favourite</button>
+</form><br /><br />
+
 @*https://image.tmdb.org/t/p/w500/f02FFv77Rh62633YEjimv7C6JM3.jpg*@
+
+<form method="post">
+    <label>Add a comment</label><br />
+    <input type="text" name="comment" /><br /><br />
+    <input type="submit" class="btn btn-outline-info" value="Add" /><br /><br />
+</form>

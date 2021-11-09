@@ -15,11 +15,12 @@ namespace BusinessLogic
             this.context = context;
       
         }
-        public Comment Create(Comment comment)
+        public void Create(Comment comment)
         {
-            var result = context.Add(comment);
+            //var result = context.Add(comment);
+            context.Add(comment);
             context.SaveChanges();
-            return result.Entity;
+            //return result.Entity;
         }
 
         public Comment GetByUserId(int userId)

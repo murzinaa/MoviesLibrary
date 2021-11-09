@@ -15,17 +15,18 @@ namespace BusinessLogic
             this.context = context;
 
         }
-        public FavouriteMovie Create(FavouriteMovie favouriteMovie)
+        public void AddFavouriteMovie(FavouriteMovie favouriteMovie)
         {
-            var result = context.Add(favouriteMovie);
+            //var result = context.Add(favouriteMovie);
+            context.FavouriteMovies.Add(favouriteMovie);
             context.SaveChanges();
-            return result.Entity;
+            //return result.Entity;
         }
 
-        public FavouriteMovie GetByUserId(int userId)
+        public List<FavouriteMovie> GetByUserId(int userId)
         {
-            //throw new NotImplementedException();
-            return context.Set<FavouriteMovie>().Find(userId);
+            throw new NotImplementedException();
+            //return context.Set<FavouriteMovie>().Find(userId);
         }
     }
 }

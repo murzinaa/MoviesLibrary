@@ -1,21 +1,15 @@
 ﻿using APIProviders;
-using BusinessLogic;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Utils;
 using DataAccess;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MoviesLibrary.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using static BusinessLogic.Utils.Constants;
 
@@ -26,18 +20,22 @@ namespace MoviesLibrary.Controllers
         private readonly ILogger<CategoriesController> _logger;
         private readonly IAPIMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
-        private readonly string apikey = "efc923dfbeb80bd974570be62f1057bc";
-        private MovieProvider movieProvider = new MovieProvider();
-        private readonly MovieContext db;
+        private readonly IUserService _userService;
+        private readonly IMovieService _movieService;
+        private readonly IFavouriteMovieService _favouriteMovieService;
+        private readonly MovieContext _context;
         private readonly UserManager<UserRegistration> _manager;
 
-        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, MovieContext context, ICategoriesService categoriesService, UserManager<UserRegistration> manager)
+        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, MovieContext context, ICategoriesService categoriesService, IUserService userService, IMovieService movieService, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
+            _movieService = movieService;
+            _userService = userService;
+            _favouriteMovieService = favouriteMovieService;
 
-            db = context;
+            _context = context;
             _manager = manager;
         }
 
@@ -108,18 +106,10 @@ namespace MoviesLibrary.Controllers
             return View("Views/Home/Result.cshtml", _apiMovieProvider.GetMovieListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
         }
 
-        //private async Task<UserRegistration> GetCurrentUser()
-        //{
-        //    return await _manager.GetUserAsync(HttpContext.User);
-        //}
-
-        //    // Generic demo method.
-        //    //public async Task DemoMethod()
-        //    //{
-        //    //    var user = await GetCurrentUser();
-        //    //    string userEmail = user.Email; // Here you gets user email 
-        //    //    string userId = user.Id;
-        //    //}
+        private async Task<UserRegistration> GetCurrentUser()
+        {
+            return await _manager.GetUserAsync(HttpContext.User);
+        }
 
         [HttpGet]
         public IActionResult AddToFavourite()
@@ -128,11 +118,18 @@ namespace MoviesLibrary.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task AddToFavourite(string movie)
         {
-            //var user = await GetCurrentUser();
-            ////int userId = int.Parse(user.Id);
+            var user = await GetCurrentUser();
+            string userName = user.UserName;
+            User user1 = new User { UserName = userName };
+            _userService.AddUser(user1);
+            Movie movie1 = new Movie { Title = movie };
+            _movieService.AddMovie(movie1);
+            FavouriteMovie favouriteMovie = new FavouriteMovie {UserId = user1.Id, MovieId = movie1.Id, UserName = user1.UserName, Title=movie1.Title };
+            _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
 
             //var optionsBuilder = new DbContextOptionsBuilder<MovieContext>();
 

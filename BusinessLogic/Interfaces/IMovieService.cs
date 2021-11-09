@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BusinessLogic.Interfaces
 {
-    public interface ICommentService
+    public interface IMovieService
     {
-        void AddComment(Comment comment);
-        List <Comment> GetCommentsByUserId(int userId);
+        void AddMovie(Movie movie);
+        //List<FavouriteMovie> GetByUserId(int userId);
     }
 }

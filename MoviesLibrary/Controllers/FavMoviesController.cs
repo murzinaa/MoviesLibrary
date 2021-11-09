@@ -1,43 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using DataAccess.Entities;
+using DataAccess;
+using System.Security.Claims;
+using APIProviders;
+using static BusinessLogic.Utils.Constants;
+using System;
 
 namespace MoviesLibrary.Controllers
 {
     [Authorize]
     public class FavMoviesController : Controller
     {
-        // Stores UserManager
         private readonly UserManager<UserRegistration> _manager;
-
-        // Inject UserManager using dependency injection.
-        // Works only if you choose "Individual user accounts" during project creation.
-        public FavMoviesController(UserManager<UserRegistration> manager)
+        private readonly IAPIMovieProvider _apiMovieProvider;
+        private readonly MovieContext _context;
+        public FavMoviesController(UserManager<UserRegistration> manager, MovieContext context, IAPIMovieProvider apiMovieProvider)
         {
             _manager = manager;
+            _context = context;
+            _apiMovieProvider = apiMovieProvider;
         }
-
-        // You can also just take part after return and use it in async methods.
-        private async Task<UserRegistration> GetCurrentUser()
-        {
-            return await _manager.GetUserAsync(HttpContext.User);
-        }
-
-        // Generic demo method.
-        //public async Task DemoMethod()
-        //{
-        //    var user = await GetCurrentUser();
-        //    string userEmail = user.Email; // Here you gets user email 
-        //    string userId = user.Id;
-        //}
         public IActionResult Favourite()
         {
-            return View();
+            ClaimsPrincipal currentUser = User;
+            var userEmail= currentUser.FindFirst(ClaimTypes.Email).Value;
+
+            List<FavouriteMovie> result = _context.FavouriteMovies.Where(f => f.UserName == userEmail).ToList();
+            List<List<string>> result1 = new List<List<string>> { };
+            foreach (var item in result)
+            {
+                result1.Add(_apiMovieProvider.GetFavouriteMoviesList(FilmApiUrls.ReturnUrlForMovieResult(Convert.ToString(item.Title))));
+            }
+            return View("Views/FavMovies/Favourite.cshtml", result1);
 
         }
     }

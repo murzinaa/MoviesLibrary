@@ -1,4 +1,5 @@
-﻿using MoviesLibrary.Models;
+﻿using APIProviders.MovResultById;
+using MoviesLibrary.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -49,31 +50,31 @@ namespace APIProviders
                 MovieResultById rslt = new MovieResultById();
 
 
-                rslt.id = filmInfo.id;
-                rslt.original_language = filmInfo.original_language;
-                rslt.overview = filmInfo.overview;
-                rslt.popularity = filmInfo.popularity;
-                rslt.release_date = filmInfo.release_date;
-                rslt.title = filmInfo.title;
-                rslt.vote_average = filmInfo.vote_average;
-                rslt.vote_count = filmInfo.vote_count;
-                rslt.backdrop_path = filmInfo.poster_path ?? "No picture";
-                ResultsArray.Add(rslt.title);
-                if (rslt.backdrop_path == "No picture")
+                rslt.Id = filmInfo.Id;
+                rslt.Original_Language = filmInfo.Original_Language;
+                rslt.Overview = filmInfo.Overview;
+                rslt.Popularity = filmInfo.Popularity;
+                rslt.Release_Date = filmInfo.Release_Date;
+                rslt.Title = filmInfo.Title;
+                rslt.Vote_Average = filmInfo.Vote_Average;
+                rslt.Vote_Count = filmInfo.Vote_Count;
+                rslt.Poster_Path = filmInfo.Poster_Path ?? "No picture";
+                ResultsArray.Add(rslt.Title);
+                if (rslt.Poster_Path == "No picture")
                 {
                     ResultsArray.Add("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png");
                 }
                 else
                 {
-                    ResultsArray.Add("https://image.tmdb.org/t/p/original" + rslt.backdrop_path);
+                    ResultsArray.Add("https://image.tmdb.org/t/p/original" + rslt.Poster_Path);
                 }
 
-                ResultsArray.Add(rslt.original_language);
-                ResultsArray.Add(rslt.overview);
-                ResultsArray.Add(rslt.popularity);
-                ResultsArray.Add(rslt.release_date);
-                ResultsArray.Add(rslt.vote_average);
-                ResultsArray.Add(rslt.vote_count);
+                ResultsArray.Add(rslt.Original_Language);
+                ResultsArray.Add(rslt.Overview);
+                ResultsArray.Add(rslt.Popularity);
+                ResultsArray.Add(rslt.Release_Date);
+                ResultsArray.Add(rslt.Vote_Average);
+                ResultsArray.Add(rslt.Vote_Count);
 
 
 

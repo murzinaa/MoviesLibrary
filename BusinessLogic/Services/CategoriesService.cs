@@ -1,19 +1,20 @@
 ﻿using APIProviders;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Utils;
+using MoviesLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class CategoriesService : ICategoriesService
     {
-        public List<string> GetCategoriesByGenre(string url)
+        public async Task<MovieResult> GetCategoriesByGenre(string url)
         {
             MovieProvider movieProvider = new MovieProvider();
-            return movieProvider.GetMovieList(url);
+            return await movieProvider.GetMovieList(url);
         }
     }
 }

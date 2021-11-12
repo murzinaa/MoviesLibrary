@@ -1,6 +1,7 @@
 using APIProviders;
 using BusinessLogic;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using DataAccess;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,7 @@ namespace MoviesLibrary
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IFavouriteMovieService, FavouriteMovieService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -58,7 +60,7 @@ namespace MoviesLibrary
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();    // подключение аутентификации
+            app.UseAuthentication();
             app.UseAuthorization();
             
 

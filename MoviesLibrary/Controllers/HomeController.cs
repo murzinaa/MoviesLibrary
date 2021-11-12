@@ -58,9 +58,9 @@ namespace MoviesLibrary.Controllers
         }
 
         [HttpPost]
-        public IActionResult Search(string title)
+        public async Task<IActionResult> Search(string title)
         {
-            return View("Views/Movie/Movie.cshtml", _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(title)));
+            return View("Views/Movie/Movie.cshtml", await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(title)));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

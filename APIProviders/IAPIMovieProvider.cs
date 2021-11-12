@@ -1,7 +1,5 @@
-﻿using MoviesLibrary.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using APIProviders.MovResultById;
+using MoviesLibrary.Models;
 using System.Threading.Tasks;
 
 namespace APIProviders
@@ -9,8 +7,9 @@ namespace APIProviders
     public interface IAPIMovieProvider
     {
         //Task<MovieResult> GetMoviesList(string url);
-        List<string> GetMovieList(string url);
-        List<string> GetMovieListById(string url);
-        List<string> GetFavouriteMoviesList(string url);
+        Task<MovieResult> GetMovieList(string url);
+        //List<string> GetMovieListById(string url);
+        Task<MovieResultById> GetMoviesListById(string url);
+       // List<string> GetFavouriteMoviesList(string url);
     }
 }

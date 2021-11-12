@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
-    public class CommentService  //ICommentService
+    public class CommentService: ICommentService
     {
         private readonly MovieContext context;
         public CommentService(MovieContext context)
@@ -15,18 +15,17 @@ namespace BusinessLogic
             this.context = context;
       
         }
-        public void Create(Comment comment)
+
+        public void AddComment(Comment comment)
         {
-            //var result = context.Add(comment);
-            context.Add(comment);
+            context.Comments.Add(comment);
             context.SaveChanges();
-            //return result.Entity;
         }
 
-        public Comment GetByUserId(int userId)
+
+        public List<Comment> GetCommentsByUserId(int userId)
         {
-            //throw new NotImplementedException();
-            return context.Set<Comment>().Find(userId);
+            throw new NotImplementedException();
         }
     }
 }

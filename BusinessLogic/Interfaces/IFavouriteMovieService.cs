@@ -10,6 +10,8 @@ namespace BusinessLogic.Interfaces
         void AddFavouriteMovie(FavouriteMovie favouriteMovie);
         //avouriteMovie GetByUserId(int userId);
         List<FavouriteMovie> GetByUserId(int userId);
+        void DeleteFavouriteMovie(int id);
+        
 
     }
 }

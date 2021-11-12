@@ -2,7 +2,7 @@
 using DataAccess;
 using DataAccess.Entities;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class UserService : IUserService
     {

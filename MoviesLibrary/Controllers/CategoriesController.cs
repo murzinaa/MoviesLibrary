@@ -23,10 +23,10 @@ namespace MoviesLibrary.Controllers
         private readonly IUserService _userService;
         private readonly IMovieService _movieService;
         private readonly IFavouriteMovieService _favouriteMovieService;
-        private readonly MovieContext _context;
+        //private readonly MovieContext _context;
         private readonly UserManager<UserRegistration> _manager;
 
-        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, MovieContext context, ICategoriesService categoriesService, IUserService userService, IMovieService movieService, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager)
+        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, ICategoriesService categoriesService, IUserService userService, IMovieService movieService, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
@@ -35,62 +35,17 @@ namespace MoviesLibrary.Controllers
             _userService = userService;
             _favouriteMovieService = favouriteMovieService;
 
-            _context = context;
+           // _context = context;
             _manager = manager;
         }
 
-        public IActionResult Action()
+
+        public async Task<IActionResult> GetByGenreAction(string genre)
         {
-            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Action))));
+            var genreEnum = (Genres)Enum.Parse(typeof(Genres), genre);
+            return View("Views/Movie/Movie.cshtml", await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(genreEnum))));
         }
-
-        public IActionResult Adventure()
-        {
-            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Adventure))));
-        }
-
-        public IActionResult Animation()
-        {
-            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Animation))));
-        }
-
-        public IActionResult Comedy()
-        {
-            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Comedy))));
-        }
-
-        public IActionResult Crime()
-        {
-            return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Crime))));
-        }
-
-        public IActionResult Drama()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Drama))));
-        }
-
-        public IActionResult Documentary()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Documentary))));
-        }
-
-        public IActionResult Fantasy()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Fantasy))));
-        }
-
-        public IActionResult Horror()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Horror))));
-        }
-
-        public IActionResult Romance()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Romance))));
-        }
-
-        public IActionResult Thriller()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Thriller))));
-        }
-
-        public IActionResult Western()
-        {return View("Views/Movie/Movie.cshtml", _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(Genres.Westerm))));
-        }
+        
 
 
         [HttpGet]
@@ -101,9 +56,10 @@ namespace MoviesLibrary.Controllers
         }
 
         [HttpPost]
-        public IActionResult MovieResult(string movie)
+        public async Task<IActionResult> MovieResult(string movie)
         {
-            return View("Views/Home/Result.cshtml", _apiMovieProvider.GetMovieListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
+            //return View();
+            return View("Views/Home/Result.cshtml", await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
         }
 
         private async Task<UserRegistration> GetCurrentUser()
@@ -120,7 +76,7 @@ namespace MoviesLibrary.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task AddToFavourite(string movie)
+        public async Task<IActionResult> AddToFavourite(string movie)
         {
             var user = await GetCurrentUser();
             string userName = user.UserName;
@@ -130,28 +86,7 @@ namespace MoviesLibrary.Controllers
             _movieService.AddMovie(movie1);
             FavouriteMovie favouriteMovie = new FavouriteMovie {UserId = user1.Id, MovieId = movie1.Id, UserName = user1.UserName, Title=movie1.Title };
             _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
-
-            //var optionsBuilder = new DbContextOptionsBuilder<MovieContext>();
-
-            //var options = optionsBuilder
-            //        .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MoviesLibrary;Trusted_Connection=True;")
-            //        .Options;
-            //using (MovieContext db = new MovieContext(options))
-            //{
-            //    Movie movie1 = new Movie { Title = movie };
-            //    //FavouriteMovie favouriteMovie = new FavouriteMovie { MovieId = 1, UserId = 2 };
-            //    db.Movies.Add(movie1);
-            //    User user1 = new User {UserName = user.UserName, FullName = "vasya Vasya"};
-            //    db.Users.Add(user1);
-            //    db.SaveChanges();
-
-            //    FavouriteMovie favouriteMovie = new FavouriteMovie {UserId=user1.Id, MovieId=movie1.Id };
-                
-            //    db.FavouriteMovies.Add(favouriteMovie);
-
-            //    db.SaveChanges();
-
-            //}
+            return RedirectToAction();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

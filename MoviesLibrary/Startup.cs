@@ -35,7 +35,9 @@ namespace MoviesLibrary
             services.AddTransient<IFavouriteMovieService, FavouriteMovieService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddDbContext<MovieContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
+                ServiceLifetime.Transient);
+
 
             services.AddIdentity<UserRegistration, IdentityRole>()
                 .AddRoles<IdentityRole>()

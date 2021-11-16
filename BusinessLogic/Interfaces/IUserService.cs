@@ -1,5 +1,5 @@
 ﻿using DataAccess.Entities;
-
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Interfaces
 {
@@ -7,5 +7,6 @@ namespace BusinessLogic.Interfaces
     {
         //User AddUser(User user);
         void AddUser(User user);
+        Task<User> GetCurrentUser(User user);
     }
 }

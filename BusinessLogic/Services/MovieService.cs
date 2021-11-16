@@ -1,8 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using DataAccess;
 using DataAccess.Entities;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +22,24 @@ namespace BusinessLogic.Services
             _context.SaveChanges();
         }
 
-        public void AddMovie(Movie movie)
+        public async void AddMovie(Movie movie)
         {
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
+            var movies = from m in _context.Movies
+                         select m;
+            if ((await movies.Where(m => m.Title.Contains(movie.Title)).ToListAsync()).Count == 0)
+            {
+                _context.Movies.Add(movie);
+                _context.SaveChanges();
+            }
+            //var movies = from m in _context.Users
+            //            select m;
+            //if ((await movies.Where(u => u.UserName.Contains(movie.Title)).ToListAsync()).Count == 0)
+            //{
+            //    _context.Movies.Add(movie);
+            //    _context.SaveChanges();
+            //}
+            //_context.Movies.Add(movie);
+            //_context.SaveChanges();
         }
 
         public async Task<Movie> GetMovieByTitle(string title)
@@ -38,5 +50,18 @@ namespace BusinessLogic.Services
             return await result.FirstOrDefaultAsync();
             //throw new System.NotImplementedException();
         }
+
+        public async Task<Movie> GetCurrentMovie(Movie movie)
+        {
+            var movies = from m in _context.Movies
+                         select m;
+            var moviesList = await movies.Where(m => m.Title.Contains(movie.Title)).ToListAsync();
+            if (moviesList.Count == 0)
+            {
+                AddMovie(movie);
+                return await movies.Where(m => m.Title.Contains(movie.Title)).FirstAsync();
+            }
+            return moviesList[0];
+        } 
     }
 }

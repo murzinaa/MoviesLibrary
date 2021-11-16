@@ -12,5 +12,6 @@ namespace BusinessLogic.Interfaces
         Task<Movie> GetMovieByTitle(string title);
         void EditMovie(Movie movie);
         //List<FavouriteMovie> GetByUserId(int userId);
+        Task<Movie> GetCurrentMovie(Movie movie);
     }
 }

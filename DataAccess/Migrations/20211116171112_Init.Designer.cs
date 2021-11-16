@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20211109204952_Init")]
+    [Migration("20211116171112_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
+
+                    b.Property<string>("MovieTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

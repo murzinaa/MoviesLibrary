@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MoviesLibrary.Models;
+using MoviesLibrary.ViewModels;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using static BusinessLogic.Utils.Constants;
 
@@ -20,13 +22,15 @@ namespace MoviesLibrary.Controllers
         private readonly ILogger<CategoriesController> _logger;
         private readonly IAPIMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
+        private readonly ICommentService _commentService;
 
 
-        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, ICategoriesService categoriesService)
+        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
+            _commentService = commentService;
         }
 
         public IActionResult Index()
@@ -52,8 +56,10 @@ namespace MoviesLibrary.Controllers
         [HttpPost]
         public async Task<IActionResult> MovieResult(string movie)
         {
-            //return View();
-            return View("Views/Categories/MovieResult.cshtml", await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+            return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+
+            //return View("Views/Categories/MovieResult.cshtml", await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
         }
 
         //private async Task<UserRegistration> GetCurrentUser()

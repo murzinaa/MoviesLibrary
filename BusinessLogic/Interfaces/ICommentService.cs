@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Interfaces
 {
     public interface ICommentService
     {
         void AddComment(Comment comment);
-        List <Comment> GetCommentsByUserId(int userId);
+        Task<List <Comment>> GetCommentsByMovieTitle(string title);
     }
 }

@@ -189,6 +189,7 @@ namespace DataAccess.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MovieId = table.Column<int>(type: "int", nullable: false),
+                    MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Body = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: true)
                 },
                 constraints: table =>

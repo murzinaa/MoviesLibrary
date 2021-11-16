@@ -10,9 +10,6 @@ namespace APIProviders.MovResultById
         public object logo_path { get; set; }
         public string name { get; set; }
         public string origin_country { get; set; }
-        //public int Id { get; set; }
-        //public string LogoPath { get; set; }
-        //public string Name { get; set; }
-        //public string OriginCountry { get; set; }
+
     }
 }

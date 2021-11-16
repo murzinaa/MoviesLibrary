@@ -20,25 +20,19 @@ namespace MoviesLibrary.Controllers
         private readonly ILogger<CategoriesController> _logger;
         private readonly IAPIMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
-        private readonly IUserService _userService;
-        private readonly IMovieService _movieService;
-        private readonly IFavouriteMovieService _favouriteMovieService;
-        //private readonly MovieContext _context;
-        private readonly UserManager<UserRegistration> _manager;
 
-        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, ICategoriesService categoriesService, IUserService userService, IMovieService movieService, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager)
+
+        public CategoriesController(ILogger<CategoriesController> logger, IAPIMovieProvider apiMovieProvider, ICategoriesService categoriesService)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
-            _movieService = movieService;
-            _userService = userService;
-            _favouriteMovieService = favouriteMovieService;
-
-           // _context = context;
-            _manager = manager;
         }
 
+        public IActionResult Index()
+        {
+            return View("Categories");
+        }
 
         public async Task<IActionResult> GetByGenreAction(string genre)
         {
@@ -59,35 +53,35 @@ namespace MoviesLibrary.Controllers
         public async Task<IActionResult> MovieResult(string movie)
         {
             //return View();
-            return View("Views/Home/Result.cshtml", await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
+            return View("Views/Categories/MovieResult.cshtml", await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)));
         }
 
-        private async Task<UserRegistration> GetCurrentUser()
-        {
-            return await _manager.GetUserAsync(HttpContext.User);
-        }
+        //private async Task<UserRegistration> GetCurrentUser()
+        //{
+        //    return await _manager.GetUserAsync(HttpContext.User);
+        //}
 
-        [HttpGet]
-        public IActionResult AddToFavourite()
-        {
+        //[HttpGet]
+        //public IActionResult AddToFavourite()
+        //{
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> AddToFavourite(string movie)
-        {
-            var user = await GetCurrentUser();
-            string userName = user.UserName;
-            User user1 = new User { UserName = userName };
-            _userService.AddUser(user1);
-            Movie movie1 = new Movie { Title = movie };
-            _movieService.AddMovie(movie1);
-            FavouriteMovie favouriteMovie = new FavouriteMovie {UserId = user1.Id, MovieId = movie1.Id, UserName = user1.UserName, Title=movie1.Title };
-            _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
-            return RedirectToAction();
-        }
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<IActionResult> AddToFavourite(string movie)
+        //{
+        //    var user = await GetCurrentUser();
+        //    string userName = user.UserName;
+        //    User user1 = new User { UserName = userName };
+        //    _userService.AddUser(user1);
+        //    Movie movie1 = new Movie { Title = movie };
+        //    _movieService.AddMovie(movie1);
+        //    FavouriteMovie favouriteMovie = new FavouriteMovie {UserId = user1.Id, MovieId = movie1.Id, UserName = user1.UserName, Title=movie1.Title, Movie = movie1, User = user1};
+        //    _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
+        //    return RedirectToAction();
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

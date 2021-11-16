@@ -48,6 +48,8 @@ namespace MoviesLibrary
         {
             if (env.IsDevelopment())
             {
+
+
                 app.UseDeveloperExceptionPage();
             }
             else

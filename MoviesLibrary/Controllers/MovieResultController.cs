@@ -26,9 +26,9 @@ namespace MoviesLibrary.Controllers
         private readonly IMovieService _movieService;
         private readonly IFavouriteMovieService _favouriteMovieService;
         private readonly UserManager<UserRegistration> _manager;
-        private readonly IAPIMovieProvider _apiMovieProvider;
+        private readonly IApiMovieProvider _apiMovieProvider;
 
-        public MovieResultController(ILogger<MovieResultController> logger, ICommentService commentService, IMovieService movieService, IUserService userService, MovieContext context, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager, IAPIMovieProvider apiMovieProvider)
+        public MovieResultController(ILogger<MovieResultController> logger, ICommentService commentService, IMovieService movieService, IUserService userService, MovieContext context, IFavouriteMovieService favouriteMovieService, UserManager<UserRegistration> manager, IApiMovieProvider apiMovieProvider)
         {
             _logger = logger;
             _context = context;

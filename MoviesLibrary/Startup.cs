@@ -20,7 +20,6 @@ namespace MoviesLibrary
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
         }
 
         public IConfiguration Configuration { get; }
@@ -28,12 +27,19 @@ namespace MoviesLibrary
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAPIMovieProvider, MovieProvider>();
+            services.AddHttpClient();
+
+            var setting = new SettingService(Configuration.GetValue<string>("FilmApiKey"));
+            services.AddSingleton(i => setting);
+
+            services.AddTransient<IApiMovieProvider, MovieProvider>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IFavouriteMovieService, FavouriteMovieService>();
             services.AddTransient<ICommentService, CommentService>();
+
+            // add swagger;
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
                 ServiceLifetime.Transient);
@@ -42,6 +48,9 @@ namespace MoviesLibrary
             services.AddIdentity<UserRegistration, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MovieContext>();
+
+            services.AddSwaggerGen();
+
             services.AddControllersWithViews();
         }
 
@@ -50,9 +59,9 @@ namespace MoviesLibrary
         {
             if (env.IsDevelopment())
             {
-
-
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1"));
             }
             else
             {
@@ -66,7 +75,6 @@ namespace MoviesLibrary
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
 
             app.UseEndpoints(endpoints =>
             {

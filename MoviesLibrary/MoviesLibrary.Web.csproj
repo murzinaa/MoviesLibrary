@@ -9,13 +9,12 @@
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\APIProviders\APIProviders.csproj" />
-    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\APIProviders\MoviesLibrary.APIProviders.csproj" />
+    <ProjectReference Include="..\BusinessLogic\MoviesLibrary.BusinessLogic.csproj" />
+    <ProjectReference Include="..\DataAccess\MoviesLibrary.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,16 +10,16 @@ using System.Security.Claims;
 using APIProviders;
 using static BusinessLogic.Utils.Constants;
 using System;
-using APIProviders.MovResultById;
+using MoviesLibrary.Models;
 
 namespace MoviesLibrary.Controllers
 {
     [Authorize]
     public class FavMoviesController : Controller
     {
-        private readonly IAPIMovieProvider _apiMovieProvider;
+        private readonly IApiMovieProvider _apiMovieProvider;
         private readonly MovieContext _context;
-        public FavMoviesController(MovieContext context, IAPIMovieProvider apiMovieProvider)
+        public FavMoviesController(MovieContext context, IApiMovieProvider apiMovieProvider)
         {
             _context = context;
             _apiMovieProvider = apiMovieProvider;
@@ -30,7 +30,7 @@ namespace MoviesLibrary.Controllers
             var userEmail= currentUser.FindFirst(ClaimTypes.Email).Value;
 
             List<FavouriteMovie> favouriteMoviesByUserName = _context.FavouriteMovies.Where(f => f.UserName == userEmail).ToList();
-            List<MovieResultById> listOfFavouriteMovies = new List<MovieResultById> { };
+            List<FullMovieResult> listOfFavouriteMovies = new List<FullMovieResult> { };
             foreach (var item in favouriteMoviesByUserName)
             {
                 listOfFavouriteMovies.Add(await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(Convert.ToString(item.Title))));

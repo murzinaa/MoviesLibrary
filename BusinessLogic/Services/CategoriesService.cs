@@ -11,10 +11,12 @@ namespace BusinessLogic.Services
 {
     public class CategoriesService : ICategoriesService
     {
-        public async Task<MovieResult> GetCategoriesByGenre(string url)
+        private readonly IApiMovieProvider _apiMovieProvider;
+
+        public CategoriesService(IApiMovieProvider apiMovieProvider)
         {
-            MovieProvider movieProvider = new MovieProvider();
-            return await movieProvider.GetMovieList(url);
+            _apiMovieProvider = apiMovieProvider;
         }
+        public async Task<MovieResult> GetCategoriesByGenre(string url) => await _apiMovieProvider.GetMovieList(url);
     }
 }

@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\APIProviders\APIProviders.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\APIProviders\MoviesLibrary.APIProviders.csproj" />
+    <ProjectReference Include="..\DataAccess\MoviesLibrary.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

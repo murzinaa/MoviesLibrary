@@ -10,20 +10,18 @@ namespace MoviesLibrary.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly IAPIMovieProvider _apiMovieProvider;
-        public SearchController(IAPIMovieProvider apiMovieProvider)
+        private readonly IApiMovieProvider _apiMovieProvider;
+        private readonly SettingService _settingService;
+
+        public SearchController(IApiMovieProvider apiMovieProvider, SettingService settingService)
         {
             _apiMovieProvider = apiMovieProvider;
-
+            _settingService = settingService;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+
         [HttpGet]
         public IActionResult Search()
         {
-
             return View();
         }
 

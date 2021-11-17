@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace APIProviders.MovResultById
+﻿namespace MoviesLibrary.Models
 {
     public class ProductionCountry
     {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace APIProviders.MovResultById
+namespace MoviesLibrary.Models
 {
 
 
-    public class MovieResultById
+    public class FullMovieResult
     {
         public bool adult { get; set; }
         public string backdrop_path { get; set; }

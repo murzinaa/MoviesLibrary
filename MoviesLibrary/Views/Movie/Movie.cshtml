@@ -6,6 +6,5 @@
     <form method="post">
         <input type="hidden" name="movie" value=@Model.results[i].id />
         <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult">@Model.results[i].title</button>
-
     </form>
 }

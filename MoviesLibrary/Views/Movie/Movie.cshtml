@@ -3,10 +3,10 @@
     @for (int i = 0; i < Model.results.Count; i++)
     {
 
-        <form method="post" style="display:inline">
-            <input type="hidden" name="movie" value=@Model.results[i].id />
-            <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.results[i].poster_path));width:200px; height:300px;" ;></button>
-
-        </form>
+    <form method="post" style="display:inline">
+        <input type="hidden" name="movie" value=@Model.results[i].id />
+        <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.results[i].poster_path));width:200px; height:300px;" ;></button>
+        
+    </form>
     }
 </span>

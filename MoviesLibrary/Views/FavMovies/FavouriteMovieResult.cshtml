@@ -1,0 +1,30 @@
+﻿@model MoviesLibrary.ViewModels.MovieResultViewModel
+<h4>@Model.ResultById.title</h4>
+<img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.poster_path) width="200" height="300" alt=" " />
+<p><b>Original language: </b>@Model.ResultById.original_language</p>
+<p><b>Description: </b>@Model.ResultById.overview</p>
+<p><b>Popularity: </b>@Model.ResultById.popularity</p>
+<p><b>Release Date: </b>@Model.ResultById.release_date</p>
+<p><b>Average Vote: </b>@Model.ResultById.vote_average</p>
+<p><b>Count of Votes: </b>@Model.ResultById.vote_count</p>
+
+<form method="POST">
+    <input type="hidden" name="movie" value=@Model.ResultById.id />
+    @*<button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="AddToFavourite">Add to favourite</button>*@
+    <button type="submit" class="btn btn-outline-info" asp-controller="FavMovies" asp-action="RemoveFromFavourite">Remove from favourite</button>
+</form>
+<br />
+<br />
+
+<form method="post">
+    @*<label>Add a comment</label><br />*@
+    <h4>Add a comment</h4>
+    <input type="text" class="form-control" name="comment" /><br />
+    <input type="hidden" name="movie" value=@Model.ResultById.id />
+    <input type="submit" class="btn btn-outline-info" value="Add" asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
+</form>
+@for (int i = 0; i < Model.MovieComments.Count; i++)
+{
+    <h6>@Model.MovieComments[i].UserName</h6>
+    <p>@Model.MovieComments[i].Body</p>
+}

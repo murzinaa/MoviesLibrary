@@ -28,7 +28,7 @@ namespace BusinessLogic.Utils
             }
             public static string ResturnUrlForTrending()
             {
-                return $"https://api.themoviedb.org/3/trending/all/day?api_key={apikey}";
+                return $"https://api.themoviedb.org/3/trending/movie/day?api_key={apikey}";
             }
         }
     }

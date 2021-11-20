@@ -6,31 +6,39 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
     public class FavouriteMovieService : IFavouriteMovieService
     {
-        private readonly MovieContext context;
+        private readonly MovieContext _context;
         public FavouriteMovieService(MovieContext context)
         {
-            this.context = context;
+            _context = context;
 
         }
         public void AddFavouriteMovie(FavouriteMovie favouriteMovie)
         {
             //var result = context.Add(favouriteMovie);
-            context.FavouriteMovies.Add(favouriteMovie);
-            context.SaveChanges();
+            _context.FavouriteMovies.Add(favouriteMovie);
+            _context.SaveChanges();
             //return result.Entity;
         }
 
-        public async void DeleteFavouriteMovie(int id)
+        public async Task DeleteFavouriteMovie(string movie)
         {
             //List<FavouriteMovie> favouriteMovies = context.FavouriteMovies.AsNoTracking().ToList();
-            var result = await context.FavouriteMovies.FindAsync(id);
-            context.Remove(result);
-            context.SaveChanges();
+            var movies = from m in _context.Movies
+                         select m;
+            var moviesList = await movies.Where(m => m.Title.Contains(movie)).FirstAsync();
+
+            var favMovies = from fm in _context.FavouriteMovies
+                         select fm;
+            var favMoviesList = await favMovies.Where(fm => fm.MovieId.Equals(moviesList.Id)).FirstAsync();
+            var result = await _context.FavouriteMovies.FindAsync(favMoviesList.Id);
+            _context.Remove(result);
+            _context.SaveChanges();
         }
 
         public List<FavouriteMovie> GetByUserId(int userId)

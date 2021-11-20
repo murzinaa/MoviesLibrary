@@ -73,7 +73,12 @@ namespace MoviesLibrary.Controllers
 
             //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
             //return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
-            return await ReturnResult(movie);
+
+            //return await ReturnResult(movie);
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+            return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
+
+
             //return RedirectToAction();
         }
 
@@ -103,51 +108,6 @@ namespace MoviesLibrary.Controllers
             Comment comment1 = new Comment { Body = comment, UserId = user.Id, MovieId = movie1.Id, UserName = userEmail, MovieTitle = movie };
             _commentService.AddComment(comment1);
             return await ReturnResult(movie);
-            //var result = from m in _context.Movies
-            //             select m;
-            //result = result.Where(m => m.Title!.Contains(movie));
-            //var result_1 = await result.ToListAsync();
-
-
-            //var result1 = from u in _context.Users
-            //              select u;
-            //result1 = result1.Where(u => u.UserName.Contains(userEmail));
-            //var result1_1 = await result1.ToListAsync();
-
-            //Movie movie1 = new Movie { };
-            //if (result_1.Count == 0)
-            //{
-            //    movie1 = new Movie { Title = movie };
-            //    _movieService.AddMovie(movie1);
-            //    if (result1_1.Count == 0)
-            //    {
-            //        User user = new User { UserName = userEmail };
-            //        _userService.AddUser(user);
-            //        Comment comment1 = new Comment { Body = comment, UserName = userEmail, UserId = user.Id, MovieId = movie1.Id, MovieTitle = movie};
-            //        _commentService.AddComment(comment1);
-
-            //    }
-            //    else
-            //    {
-            //        Comment comment1 = new Comment { Body = comment, UserName = userEmail, UserId = result1_1[0].Id, MovieId = movie1.Id, MovieTitle = movie };
-            //        _commentService.AddComment(comment1);
-
-            //    }
-            //}
-            //else if (result1_1.Count == 0 && result_1.Count >= 0)
-            //{
-            //    User user = new User { UserName = userEmail };
-            //    _userService.AddUser(user);
-            //    Comment comment1 = new Comment { Body = comment, UserName = userEmail, UserId = user.Id, MovieId = result_1[0].Id, MovieTitle = movie };
-            //    _commentService.AddComment(comment1);
-
-            //}
-            //else if (result_1.Count >= 0 && result1_1.Count >= 0)
-            //{
-            //    Comment comment1 = new Comment { Body = comment, UserName = userEmail, UserId = result1_1[0].Id, MovieId = result_1[0].Id, MovieTitle = movie };
-            //    _commentService.AddComment(comment1);
-            //}
-
 
         }
 

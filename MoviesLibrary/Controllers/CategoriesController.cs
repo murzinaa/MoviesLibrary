@@ -1,6 +1,7 @@
 ﻿using APIProviders;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Utils;
+using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MoviesLibrary.Models;
@@ -8,6 +9,7 @@ using MoviesLibrary.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static BusinessLogic.Utils.Constants;
 
@@ -19,14 +21,16 @@ namespace MoviesLibrary.Controllers
         private readonly IApiMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
         private readonly ICommentService _commentService;
+        private readonly MovieContext _context;
 
 
-        public CategoriesController(ILogger<CategoriesController> logger, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService)
+        public CategoriesController(ILogger<CategoriesController> logger, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService, MovieContext context)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
             _commentService = commentService;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -52,8 +56,26 @@ namespace MoviesLibrary.Controllers
         [HttpPost]
         public async Task<IActionResult> MovieResult(string movie)
         {
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-            return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            ClaimsPrincipal currentUser = User;
+            var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
+
+            var favMovies = from fm in _context.FavouriteMovies
+                            select fm;
+
+
+            var favMoviesList = favMovies.Where(fm => fm.UserName.Contains(userEmail)&&fm.Title.Contains(movie)).Any();
+            if (favMoviesList)
+            {
+                MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+                return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
+            }
+            else
+            {
+                MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+                return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            }
+
+            
         }
 
         

@@ -1,4 +1,5 @@
 ﻿using MoviesLibrary.Models;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -32,6 +33,15 @@ namespace APIProviders
             var model = JsonSerializer.Deserialize<MovieResult>(content);
 
             return model;
+        }
+
+        public async Task<List<Result>> GetTrendingMovies(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var model = JsonSerializer.Deserialize<TrendingMoviesResult>(content);
+            return model.results;
         }
 
     }

@@ -1,0 +1,15 @@
+﻿@using APIProviders
+@model List<Result>
+
+<span style="display:inline">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <form method="post" style="display:inline">
+                <input type="hidden" name="movie" value=@Model[i].id />
+                <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model[i].poster_path));width:200px; height:300px;"></button>
+
+            </form>
+        }
+
+</span>
+

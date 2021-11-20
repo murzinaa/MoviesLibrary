@@ -13,6 +13,6 @@
         Horror = 27,
         Romance = 10749,
         Thriller = 53,
-        Westerm = 37
+        Western = 37
     }
 }

@@ -15,7 +15,7 @@ namespace BusinessLogic.Services
             _context = context;
 
         }
-        public async void AddUser(User user)
+        public async Task AddUser(User user)
         {
             var users = from u in _context.Users
                           select u;
@@ -34,8 +34,8 @@ namespace BusinessLogic.Services
             var usersList = await users.Where(u => u.UserName.Contains(user.UserName)).ToListAsync();
             if (usersList.Count == 0)
             {
-                AddUser(user);
-                return await users.Where(u => u.UserName.Contains(user.UserName)).FirstAsync();
+                await AddUser(user);
+                return await users.Where(u => u.UserName.Contains(user.UserName)).FirstOrDefaultAsync();
             }
             return usersList[0];
             //throw new System.NotImplementedException();

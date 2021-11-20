@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccess.Migrations
+namespace MoviesLibrary.DataAccess.Migrations
 {
     [DbContext(typeof(MovieContext))]
     partial class MovieContextModelSnapshot : ModelSnapshot

@@ -42,8 +42,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="FavMovies" asp-action="Favourite">Favourite Movies</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Trending" asp-action="TrendingMovies">Trending</a>
                         </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>*@
 
                         @if (User.Identity.IsAuthenticated)
                         {

@@ -22,7 +22,7 @@ namespace BusinessLogic.Services
             _context.SaveChanges();
         }
 
-        public async void AddMovie(Movie movie)
+        public async Task AddMovie(Movie movie)
         {
             var movies = from m in _context.Movies
                          select m;
@@ -58,8 +58,8 @@ namespace BusinessLogic.Services
             var moviesList = await movies.Where(m => m.Title.Contains(movie.Title)).ToListAsync();
             if (moviesList.Count == 0)
             {
-                AddMovie(movie);
-                return await movies.Where(m => m.Title.Contains(movie.Title)).FirstAsync();
+                await AddMovie(movie);
+                return await movies.Where(m => m.Title.Contains(movie.Title)).FirstOrDefaultAsync();
             }
             return moviesList[0];
         } 

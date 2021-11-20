@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataAccess.Migrations
+namespace MoviesLibrary.DataAccess.Migrations
 {
     public partial class Init : Migration
     {

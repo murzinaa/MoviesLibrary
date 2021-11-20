@@ -24,6 +24,11 @@ namespace BusinessLogic.Utils
             public static string ReturnUrlForSearch(string title)
             {
                 return $"https://api.themoviedb.org/3/search/movie?query={title}&api_key={apikey}";
+
+            }
+            public static string ResturnUrlForTrending()
+            {
+                return $"https://api.themoviedb.org/3/trending/all/day?api_key={apikey}";
             }
         }
     }

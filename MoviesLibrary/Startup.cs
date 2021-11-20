@@ -28,6 +28,12 @@ namespace MoviesLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            services.AddDbContext<MovieContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
+                ServiceLifetime.Transient);
+            services.AddIdentity<UserRegistration, IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<MovieContext>();
 
             var setting = new SettingService(Configuration.GetValue<string>("FilmApiKey"));
             services.AddSingleton(i => setting);
@@ -40,16 +46,11 @@ namespace MoviesLibrary
             services.AddTransient<ICommentService, CommentService>();
 
             // add swagger;
-            services.AddDbContext<MovieContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
-                ServiceLifetime.Transient);
 
 
-            services.AddIdentity<UserRegistration, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<MovieContext>();
+            
 
-            services.AddSwaggerGen();
+           // services.AddSwaggerGen();
 
             services.AddControllersWithViews();
         }
@@ -60,8 +61,8 @@ namespace MoviesLibrary
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1"));
             }
             else
             {

@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccess.Migrations
+namespace MoviesLibrary.DataAccess.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20211116210924_Init")]
+    [Migration("20211120101723_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -10,7 +10,7 @@ namespace MoviesLibrary.APIProviders
         Task<MovieResult> GetMovieList(string url);
         //List<string> GetMovieListById(string url);
         Task<FullMovieResult> GetMoviesListById(string url);
-        Task<List<Result>> GetTrendingMovies(string url);
+        Task<TrendingMoviesResult> GetTrendingMovies(string url);
         // List<string> GetFavouriteMoviesList(string url);
     }
 }

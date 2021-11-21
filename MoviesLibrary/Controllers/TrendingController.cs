@@ -14,9 +14,9 @@ namespace MoviesLibrary.Web.Controllers
 
             _apiMovieProvider = apiMovieProvider;
         }
-        public async Task<IActionResult> TrendingMovies()
+        public async Task<IActionResult> TrendingMovies(int page=1)
         {
-            return View(await _apiMovieProvider.GetTrendingMovies(Constants.FilmApiUrls.ResturnUrlForTrending()));
+            return View(await _apiMovieProvider.GetTrendingMovies(Constants.FilmApiUrls.ResturnUrlForTrending(page)));
         }
     }
 }

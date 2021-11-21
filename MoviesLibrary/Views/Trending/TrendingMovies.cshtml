@@ -1,16 +1,41 @@
 ﻿@using MoviesLibrary.APIProviders
-@using MoviesLibrary.Models 
-@model List<Result>
+@using MoviesLibrary.Models
+@model TrendingMoviesResult
 
 <span style="display:inline">
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            <form method="post" style="display:inline">
-                <input type="hidden" name="movie" value=@Model[i].id />
-                <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model[i].poster_path));width:200px; height:300px;"></button>
+    @for (int i = 0; i < Model.results.Count; i++)
+    {
+        <form method="post" style="display:inline">
+            <input type="hidden" name="movie" value=@Model.results[i].id />
+            <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult" asp-route-page=@Model.page style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.results[i].poster_path));width:200px; height:300px;"></button>
 
-            </form>
-        }
+        </form>
+    }
 
 </span>
 
+@if (Model.page == Model.total_pages)
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page - 1)>Previous Page</button>
+        </form>
+    </center>
+}
+else if (Model.page == 1)
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page + 1)>Next Page</button>
+        </form>
+    </center>
+}
+else
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page - 1)>Previous Page</button>
+            <button type="submit" class="btn btn-outline-info" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page+1)>Next Page</button>
+        </form>
+    </center>
+}

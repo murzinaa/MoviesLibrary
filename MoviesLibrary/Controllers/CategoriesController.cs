@@ -91,32 +91,6 @@ namespace MoviesLibrary.Web.Controllers
 
         }
 
-        //[HttpGet]
-        //public IActionResult NextPage()
-        //{
-
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> NextPage(int page, string genre)
-        //{
-        //    return await GetByGenreAction(genre, page);
-        //}
-
-        //[HttpGet]
-        //public IActionResult PreviousPage()
-        //{
-
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> PreviousPage(int page, string genre)
-        //{
-        //    return await GetByGenreAction(genre, page);
-        //}
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -21,9 +21,9 @@
                 return $"https://api.themoviedb.org/3/search/movie?query={title}&api_key={apikey}";
 
             }
-            public static string ResturnUrlForTrending()
+            public static string ResturnUrlForTrending(int page)
             {
-                return $"https://api.themoviedb.org/3/trending/movie/day?api_key={apikey}";
+                return $"https://api.themoviedb.org/3/trending/movie/day?api_key={apikey}&page={page}";
             }
         }
     }

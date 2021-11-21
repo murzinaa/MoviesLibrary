@@ -13,20 +13,26 @@
 
 @if (Model.MovieResultVM.page == Model.MovieResultVM.total_pages)
 {
-    <form method="POST">
-        <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page - 1) >Previous Page</button>
-    </form>
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page - 1)>Previous Page</button>
+        </form>
+    </center>
 }
 else if (Model.MovieResultVM.page == 1)
 {
-    <form method="POST">
-        <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page + 1) >Next Page</button>
-    </form>
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page + 1)>Next Page</button>
+        </form>
+    </center>
 }
 else
 {
-<form method="POST">
-    <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page - 1)>Previous Page</button>
-    <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page+1)>Next Page</button>
-</form>
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page - 1)>Previous Page</button>
+            <button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre=@Model.Genre asp-route-page=@(Model.MovieResultVM.page+1)>Next Page</button>
+        </form>
+    </center>
 }

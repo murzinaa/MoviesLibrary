@@ -35,13 +35,13 @@ namespace MoviesLibrary.APIProviders
             return model;
         }
 
-        public async Task<List<Result>> GetTrendingMovies(string url)
+        public async Task<TrendingMoviesResult> GetTrendingMovies(string url)
         {
             var response = await _httpClient.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
 
             var model = JsonSerializer.Deserialize<TrendingMoviesResult>(content);
-            return model.results;
+            return model;
         }
 
     }

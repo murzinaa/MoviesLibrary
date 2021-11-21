@@ -1,19 +1,25 @@
 ﻿@model MoviesLibrary.Web.ViewModels.MovieResultViewModel
-<h4>@Model.ResultById.title</h4>
-<img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.poster_path) width="200" height="300" alt=" " />
-<p><b>Original language: </b>@Model.ResultById.original_language</p>
-<p><b>Description: </b>@Model.ResultById.overview</p>
-<p><b>Popularity: </b>@Model.ResultById.popularity</p>
-<p><b>Release Date: </b>@Model.ResultById.release_date</p>
-<p><b>Average Vote: </b>@Model.ResultById.vote_average</p>
-<p><b>Count of Votes: </b>@Model.ResultById.vote_count</p><br />
-@*<iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/XK-MIqHz5tU" title="YouTube video player" frameborder="0" allow="accelerometer; 
-        autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-</iframe>*@
+<h4>@Model.ResultById.OriginalTitle</h4>
+<img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.PosterPath) width="200" height="300" alt=" " />
+<p><b>Original language: </b>@Model.ResultById.OriginalLanguage</p>
+<p><b>Description: </b>@Model.ResultById.Overview</p>
+<p><b>Popularity: </b>@Model.ResultById.Popularity</p>
+<p><b>Release Date: </b>@Model.ResultById.ReleaseDate</p>
+<p><b>Average Vote: </b>@Model.ResultById.VoteAverage</p>
+<p><b>Count of Votes: </b>@Model.ResultById.VoteCount</p>
+<br />
+
+@if (Model.ResultById.Videos.Results.Count > 0)
+{
+<iframe width="560" height="315"
+        src=@("https://www.youtube.com/embed/"+Model.ResultById.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
+            autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+}
+
 
 <form method="POST">
-    <input type="hidden" name="movie" value=@Model.ResultById.id />
+    <input type="hidden" name="movie" value=@Model.ResultById.Id />
     @*<button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="AddToFavourite">Add to favourite</button>*@
     <button type="submit" class="btn btn-outline-info" asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
 </form>
@@ -24,7 +30,7 @@
     @*<label>Add a comment</label><br />*@
     <h4>Add a comment</h4>
     <input type="text" class="form-control" name="comment" /><br />
-    <input type="hidden" name="movie" value=@Model.ResultById.id />
+    <input type="hidden" name="movie" value=@Model.ResultById.Id />
     <input type="submit" class="btn btn-outline-info" value="Add" asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
 </form>
 @for (int i = 0; i < Model.MovieComments.Count; i++)

@@ -1,0 +1,38 @@
+﻿@model SearchViewModel
+<span style="display:inline">
+    @for (int i = 0; i < Model.SearchMovieResult.Results.Count; i++)
+    {
+        <form method="post" style="display:inline">
+            <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" asp-route-movie=@Model.SearchMovieResult.Results[i].Id 
+                    style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.SearchMovieResult.Results[i].PosterPath));width:200px; height:300px;" ;></button>
+
+        </form>
+    }
+</span>
+
+
+@if (Model.SearchMovieResult.Page == Model.SearchMovieResult.TotalPages && Model.SearchMovieResult.TotalPages != 1)
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page - 1)>Previous Page</button>
+        </form>
+    </center>
+}
+else if (Model.SearchMovieResult.Page == 1 && Model.SearchMovieResult.TotalPages != 1)
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page + 1)>Next Page</button>
+        </form>
+    </center>
+}
+else if (Model.SearchMovieResult.TotalPages != 1)
+{
+    <center>
+        <form method="POST">
+            <button type="submit" class="btn btn-outline-info" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page - 1)>Previous Page</button>
+            <button type="submit" class="btn btn-outline-info" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page+1)>Next Page</button>
+        </form>
+    </center>
+}

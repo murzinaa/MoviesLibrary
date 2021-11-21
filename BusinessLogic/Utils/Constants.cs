@@ -13,12 +13,13 @@
 
             public static string ReturnUrlForMovieResult(string movie)
             {
-                return $"https://api.themoviedb.org/3/movie/{movie}?api_key={apikey}";
+                return $"https://api.themoviedb.org/3/movie/{movie}?api_key={apikey}&append_to_response=videos";
+                //return $"https://api.themoviedb.org/3/movie/{movie}?api_key={apikey}";
             }
 
-            public static string ReturnUrlForSearch(string title)
+            public static string ReturnUrlForSearch(string title, int page)
             {
-                return $"https://api.themoviedb.org/3/search/movie?query={title}&api_key={apikey}";
+                return $"https://api.themoviedb.org/3/search/movie?query={title}&api_key={apikey}&page={page}";
 
             }
             public static string ResturnUrlForTrending(int page)

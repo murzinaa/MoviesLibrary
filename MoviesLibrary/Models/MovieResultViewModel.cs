@@ -7,6 +7,7 @@ namespace MoviesLibrary.Web.ViewModels
     public class MovieResultViewModel
     {
         public FullMovieResult ResultById{ get; set; }
+        //public MovieResultWithVideos ResultById { get; set; }
         public List<Comment> MovieComments { get; set; }
     }
 }

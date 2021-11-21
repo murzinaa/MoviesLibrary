@@ -55,6 +55,8 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FavouriteMovieResult(string movie)
         {
+            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+
             MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
             return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
         }
@@ -70,6 +72,8 @@ namespace MoviesLibrary.Web.Controllers
         public async Task<IActionResult> RemoveFromFavourite(string movie)
         {
             await _favouriteMovieService.DeleteFavouriteMovie(movie);
+            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+
             MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
             return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
         }

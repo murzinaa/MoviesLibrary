@@ -50,6 +50,10 @@ namespace MoviesLibrary.Web.Controllers
 
         private async Task<IActionResult> ReturnResult(string movie, string view)
         {
+            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { };
+            //movieResultViewModel.ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie));
+            //movieResultViewModel.MovieComments = await _commentService.GetCommentsByMovieTitle(movie);
+
             MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
             return View($"{view}", movieResultViewModel);
         }

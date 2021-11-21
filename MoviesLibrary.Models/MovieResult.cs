@@ -1,31 +1,66 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace MoviesLibrary.Models
 {
     public class MovieModel
     {
-        public bool adult { get; set; }
-        public string backdrop_path { get; set; }
-        public List<int> genre_ids { get; set; }
-        public int id { get; set; }
-        public string original_language { get; set; }
-        public string original_title { get; set; }
-        public string overview { get; set; }
-        public double popularity { get; set; }
-        public string poster_path { get; set; }
-        public string release_date { get; set; }
-        public string title { get; set; }
-        public bool video { get; set; }
-        public double vote_average { get; set; }
-        public int vote_count { get; set; }
+        [JsonPropertyName("adult")]
+        public bool Adult { get; set; }
+
+        [JsonPropertyName("backdrop_path")]
+        public string BackdropPath { get; set; }
+
+        [JsonPropertyName("genre_ids")]
+        public List<int> GenreIds { get; set; }
+
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("original_language")]
+        public string OriginalLanguage { get; set; }
+
+        [JsonPropertyName("original_title")]
+        public string OriginalTitle { get; set; }
+
+        [JsonPropertyName("overview")]
+        public string Overview { get; set; }
+
+        [JsonPropertyName("popularity")]
+        public double Popularity { get; set; }
+
+        [JsonPropertyName("poster_path")]
+        public string PosterPath { get; set; }
+
+        [JsonPropertyName("release_date")]
+        public string ReleaseDate { get; set; }
+
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        [JsonPropertyName("video")]
+        public bool Video { get; set; }
+
+        [JsonPropertyName("vote_average")]
+        public double VoteAverage { get; set; }
+
+        [JsonPropertyName("vote_count")]
+        public int VoteCount { get; set; }
     }
 
     public class MovieResult
     {
-        public int page { get; set; }
-        public List<MovieModel> results { get; set; }
-        public int total_pages { get; set; }
-        public int total_results { get; set; }
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
+
+        [JsonPropertyName("results")]
+        public List<MovieModel> Results { get; set; }
+
+        [JsonPropertyName("total_pages")]
+        public int TotalPages { get; set; }
+
+        [JsonPropertyName("total_results")]
+        public int TotalResults { get; set; }
     }
 
 

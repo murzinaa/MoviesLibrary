@@ -44,5 +44,13 @@ namespace MoviesLibrary.APIProviders
             return model;
         }
 
+        //public async Task<MovieResultWithVideos> GetMoviesWithVideos(string url)
+        //{
+        //    var response = await _httpClient.GetAsync(url);
+        //    var content = await response.Content.ReadAsStringAsync();
+
+        //    var model = JsonSerializer.Deserialize<MovieResultWithVideos>(content);
+        //    return model;
+        //}
     }
 }

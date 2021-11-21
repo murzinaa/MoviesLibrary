@@ -6,9 +6,9 @@
         public static class FilmApiUrls
         {
 
-            public static string ReturnUrl(int genre)
+            public static string ReturnUrl(int genre, int page)
             {
-                return $"https://api.themoviedb.org/3/discover/movie?api_key={apikey}&with_genres={genre}&page=1";
+                return $"https://api.themoviedb.org/3/discover/movie?api_key={apikey}&with_genres={genre}&page={page}";
             }
 
             public static string ReturnUrlForMovieResult(string movie)

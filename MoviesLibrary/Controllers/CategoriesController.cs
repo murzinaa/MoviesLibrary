@@ -38,10 +38,14 @@ namespace MoviesLibrary.Web.Controllers
             return View("Categories");
         }
 
-        public async Task<IActionResult> GetByGenreAction(string genre)
+        public async Task<IActionResult> GetByGenreAction(string genre, int page)
         {
-            var genreEnum = (Genres)Enum.Parse(typeof(Genres), genre);
-            return View("Views/Movie/Movie.cshtml", await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(genreEnum))));
+           
+            var genreEnum = Convert.ToInt32((Genres)Enum.Parse(typeof(Genres), genre));
+            MovieViewModel movieViewModel = new MovieViewModel { Genre = genre, MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)) };
+            return View("Views/Movie/Movie.cshtml", movieViewModel);
+
+            //return View("Views/Movie/Movie.cshtml", await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)));
         }
 
         private async Task<IActionResult> ReturnResult(string movie, string view)
@@ -73,14 +77,10 @@ namespace MoviesLibrary.Web.Controllers
                 if (favMoviesList)
                 {
                     return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
-                    //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-                    //return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
                 }
                 else
                 {
                     return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
-                    //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-                    //return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
                 }
             }
 
@@ -91,6 +91,31 @@ namespace MoviesLibrary.Web.Controllers
 
         }
 
+        //[HttpGet]
+        //public IActionResult NextPage()
+        //{
+
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> NextPage(int page, string genre)
+        //{
+        //    return await GetByGenreAction(genre, page);
+        //}
+
+        //[HttpGet]
+        //public IActionResult PreviousPage()
+        //{
+
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> PreviousPage(int page, string genre)
+        //{
+        //    return await GetByGenreAction(genre, page);
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

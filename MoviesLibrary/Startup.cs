@@ -1,9 +1,3 @@
-using APIProviders;
-using BusinessLogic;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
-using DataAccess;
-using DataAccess.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using MoviesLibrary.APIProviders;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.BusinessLogic.Services;
+using MoviesLibrary.DataAccess;
+using MoviesLibrary.DataAccess.Entities;
 
 namespace MoviesLibrary
 {

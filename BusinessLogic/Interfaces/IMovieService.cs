@@ -1,10 +1,7 @@
-﻿using DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MoviesLibrary.DataAccess.Entities;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace MoviesLibrary.BusinessLogic.Interfaces
 {
     public interface IMovieService
     {

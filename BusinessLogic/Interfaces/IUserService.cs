@@ -1,7 +1,7 @@
-﻿using DataAccess.Entities;
+﻿using MoviesLibrary.DataAccess.Entities;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace MoviesLibrary.BusinessLogic.Interfaces
 {
     public interface IUserService
     {

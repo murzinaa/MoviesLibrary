@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using DataAccess.Entities;
-using DataAccess;
 using System.Security.Claims;
-using APIProviders;
-using static BusinessLogic.Utils.Constants;
+using static MoviesLibrary.BusinessLogic.Utils.Constants;
 using System;
 using MoviesLibrary.Models;
-using MoviesLibrary.ViewModels;
-using BusinessLogic.Interfaces;
+using MoviesLibrary.Web.ViewModels;
+using MoviesLibrary.APIProviders;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.DataAccess;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     [Authorize]
     public class FavMoviesController : Controller

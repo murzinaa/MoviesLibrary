@@ -1,14 +1,13 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess;
-using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess;
+using MoviesLibrary.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Services
+namespace MoviesLibrary.BusinessLogic.Services
 {
     public class FavouriteMovieService : IFavouriteMovieService
     {
@@ -34,7 +33,7 @@ namespace BusinessLogic.Services
             var moviesList = await movies.Where(m => m.Title.Contains(movie)).FirstAsync();
 
             var favMovies = from fm in _context.FavouriteMovies
-                         select fm;
+                            select fm;
             var favMoviesList = await favMovies.Where(fm => fm.MovieId.Equals(moviesList.Id)).FirstAsync();
             var result = await _context.FavouriteMovies.FindAsync(favMoviesList.Id);
             _context.Remove(result);

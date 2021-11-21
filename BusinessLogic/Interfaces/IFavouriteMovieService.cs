@@ -1,12 +1,10 @@
-﻿using DataAccess.Entities;
-using System;
+﻿using MoviesLibrary.DataAccess.Entities;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace MoviesLibrary.BusinessLogic.Interfaces
 {
-   public  interface IFavouriteMovieService
+    public  interface IFavouriteMovieService
     {
         void AddFavouriteMovie(FavouriteMovie favouriteMovie);
         //avouriteMovie GetByUserId(int userId);

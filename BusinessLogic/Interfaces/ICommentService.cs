@@ -1,14 +1,12 @@
-﻿using DataAccess.Entities;
-using System;
+﻿using MoviesLibrary.DataAccess.Entities;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace MoviesLibrary.BusinessLogic.Interfaces
 {
     public interface ICommentService
     {
         void AddComment(Comment comment);
-        Task<List <Comment>> GetCommentsByMovieTitle(string title);
+        Task<List<Comment>> GetCommentsByMovieTitle(string title);
     }
 }

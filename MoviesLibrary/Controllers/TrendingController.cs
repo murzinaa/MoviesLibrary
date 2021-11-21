@@ -1,10 +1,7 @@
-﻿using APIProviders;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using BusinessLogic.Utils;
+using MoviesLibrary.BusinessLogic.Utils;
+using MoviesLibrary.APIProviders;
 
 namespace MoviesLibrary.Web.Controllers
 {

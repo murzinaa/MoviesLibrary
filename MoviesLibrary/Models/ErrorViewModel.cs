@@ -1,7 +1,4 @@
-using System;
-
-
-namespace MoviesLibrary.Models
+namespace MoviesLibrary.Web.Models
 {
     public class ErrorViewModel
     {

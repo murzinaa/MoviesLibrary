@@ -1,12 +1,9 @@
-﻿using APIProviders;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using MoviesLibrary.APIProviders;
 using System.Threading.Tasks;
-using static BusinessLogic.Utils.Constants;
+using static MoviesLibrary.BusinessLogic.Utils.Constants;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     public class SearchController : Controller
     {

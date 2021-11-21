@@ -1,11 +1,11 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess;
-using DataAccess.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.DataAccess;
 
-namespace BusinessLogic.Services
+namespace MoviesLibrary.BusinessLogic.Services
 {
     public class MovieService : IMovieService
     {
@@ -62,6 +62,6 @@ namespace BusinessLogic.Services
                 return await movies.Where(m => m.Title.Contains(movie.Title)).FirstOrDefaultAsync();
             }
             return moviesList[0];
-        } 
+        }
     }
 }

@@ -1,21 +1,18 @@
-﻿using APIProviders;
-using BusinessLogic.Interfaces;
-using DataAccess;
-using DataAccess.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MoviesLibrary.ViewModels;
-using System;
-using System.Collections.Generic;
+using MoviesLibrary.APIProviders;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess;
+using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.Web.ViewModels;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static BusinessLogic.Utils.Constants;
+using static MoviesLibrary.BusinessLogic.Utils.Constants;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     public class MovieResultController : Controller
     {
@@ -108,6 +105,20 @@ namespace MoviesLibrary.Controllers
             Comment comment1 = new Comment { Body = comment, UserId = user.Id, MovieId = movie1.Id, UserName = userEmail, MovieTitle = movie };
             _commentService.AddComment(comment1);
             return await ReturnResult(movie);
+
+        }
+
+
+        [HttpGet]
+        public IActionResult NextPage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NextPage(int page)
+        {
+            return View();
 
         }
 

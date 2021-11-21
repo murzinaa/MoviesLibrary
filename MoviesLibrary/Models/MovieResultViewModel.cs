@@ -1,8 +1,8 @@
-﻿using DataAccess.Entities;
+﻿using MoviesLibrary.DataAccess.Entities;
 using MoviesLibrary.Models;
 using System.Collections.Generic;
 
-namespace MoviesLibrary.ViewModels
+namespace MoviesLibrary.Web.ViewModels
 {
     public class MovieResultViewModel
     {

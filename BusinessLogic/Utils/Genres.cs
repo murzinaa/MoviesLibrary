@@ -1,6 +1,6 @@
-﻿namespace BusinessLogic.Utils
+﻿namespace MoviesLibrary.BusinessLogic.Utils
 {
-    public enum Genres: int
+    public enum Genres : int
     {
         Action = 28,
         Adventure = 12,

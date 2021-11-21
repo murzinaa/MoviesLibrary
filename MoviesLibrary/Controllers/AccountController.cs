@@ -1,11 +1,10 @@
-﻿using DataAccess.Registration;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using MoviesLibrary.Models;
-using DataAccess.Entities;
+using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.DataAccess.Registration;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     public class AccountController : Controller
     {
@@ -27,7 +26,7 @@ namespace MoviesLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserRegistration user = new UserRegistration { Email = model.Email, UserName = model.Email};
+                UserRegistration user = new UserRegistration { Email = model.Email, UserName = model.Email };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

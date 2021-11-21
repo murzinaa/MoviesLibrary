@@ -1,18 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MoviesLibrary.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+using MoviesLibrary.Web.Models;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using APIProviders;
-using static BusinessLogic.Utils.Constants;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     public class HomeController : Controller
     {

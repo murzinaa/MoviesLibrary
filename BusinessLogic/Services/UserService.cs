@@ -1,11 +1,11 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess;
-using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess;
+using MoviesLibrary.DataAccess.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Services
+namespace MoviesLibrary.BusinessLogic.Services
 {
     public class UserService : IUserService
     {
@@ -18,13 +18,13 @@ namespace BusinessLogic.Services
         public async Task AddUser(User user)
         {
             var users = from u in _context.Users
-                          select u;
+                        select u;
             if ((await users.Where(u => u.UserName.Contains(user.UserName)).ToListAsync()).Count == 0)
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
             }
-            
+
         }
 
         public async Task<User> GetCurrentUser(User user)

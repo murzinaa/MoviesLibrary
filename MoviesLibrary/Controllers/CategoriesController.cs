@@ -1,19 +1,19 @@
-﻿using APIProviders;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Utils;
-using DataAccess;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MoviesLibrary.Models;
-using MoviesLibrary.ViewModels;
+using MoviesLibrary.APIProviders;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.BusinessLogic.Utils;
+using MoviesLibrary.DataAccess;
+using MoviesLibrary.Web.Models;
+using MoviesLibrary.Web.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static BusinessLogic.Utils.Constants;
+using static MoviesLibrary.BusinessLogic.Utils.Constants;
 
-namespace MoviesLibrary.Controllers
+namespace MoviesLibrary.Web.Controllers
 {
     public class CategoriesController : Controller
     {
@@ -43,8 +43,12 @@ namespace MoviesLibrary.Controllers
             var genreEnum = (Genres)Enum.Parse(typeof(Genres), genre);
             return View("Views/Movie/Movie.cshtml", await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(Convert.ToInt32(genreEnum))));
         }
-        
 
+        private async Task<IActionResult> ReturnResult(string movie, string view)
+        {
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+            return View($"{view}", movieResultViewModel);
+        }
 
         [HttpGet]
         public IActionResult MovieResult()
@@ -57,28 +61,37 @@ namespace MoviesLibrary.Controllers
         public async Task<IActionResult> MovieResult(string movie)
         {
             ClaimsPrincipal currentUser = User;
-            var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
-
-            var favMovies = from fm in _context.FavouriteMovies
-                            select fm;
-
-
-            var favMoviesList = favMovies.Where(fm => fm.UserName.Contains(userEmail)&&fm.Title.Contains(movie)).Any();
-            if (favMoviesList)
+            if (currentUser.Identity.Name != null)
             {
-                MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-                return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
+                var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
+
+                var favMovies = from fm in _context.FavouriteMovies
+                                select fm;
+
+
+                var favMoviesList = favMovies.Where(fm => fm.UserName.Contains(userEmail) && fm.Title.Contains(movie)).Any();
+                if (favMoviesList)
+                {
+                    return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
+                    //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+                    //return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
+                }
+                else
+                {
+                    return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+                    //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+                    //return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+                }
             }
+
             else
             {
-                MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-                return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+                return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
             }
 
-            
         }
 
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace APIProviders
+namespace MoviesLibrary.APIProviders
 {
     public interface IApiMovieProvider
     {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace DataAccess.Entities
+namespace MoviesLibrary.DataAccess.Entities
 {
     public class UserRegistration : IdentityUser
     {

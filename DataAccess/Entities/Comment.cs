@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-
-#nullable disable
-
-namespace DataAccess.Entities
+﻿namespace MoviesLibrary.DataAccess.Entities
 {
     public class Comment
     {

@@ -1,7 +1,7 @@
 ﻿using MoviesLibrary.Models;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace MoviesLibrary.BusinessLogic.Interfaces
 {
     public interface ICategoriesService
     {

@@ -1,22 +1,21 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess;
-using DataAccess.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using MoviesLibrary.BusinessLogic.Interfaces;
+using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.DataAccess;
 
-namespace BusinessLogic.Services
+namespace MoviesLibrary.BusinessLogic.Services
 {
-    public class CommentService: ICommentService
+    public class CommentService : ICommentService
     {
         private readonly MovieContext _context;
         public CommentService(MovieContext context)
         {
             _context = context;
-      
+
         }
 
         public void AddComment(Comment comment)

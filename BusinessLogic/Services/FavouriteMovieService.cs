@@ -19,15 +19,12 @@ namespace MoviesLibrary.BusinessLogic.Services
         }
         public void AddFavouriteMovie(FavouriteMovie favouriteMovie)
         {
-            //var result = context.Add(favouriteMovie);
             _context.FavouriteMovies.Add(favouriteMovie);
             _context.SaveChanges();
-            //return result.Entity;
         }
 
         public async Task DeleteFavouriteMovie(string movie)
         {
-            //List<FavouriteMovie> favouriteMovies = context.FavouriteMovies.AsNoTracking().ToList();
             var movies = from m in _context.Movies
                          select m;
             var moviesList = await movies.Where(m => m.Title.Contains(movie)).FirstAsync();
@@ -40,10 +37,20 @@ namespace MoviesLibrary.BusinessLogic.Services
             _context.SaveChanges();
         }
 
-        public List<FavouriteMovie> GetByUserId(int userId)
+
+        public List<FavouriteMovie> GetByUserName(string userName)
         {
-            throw new NotImplementedException();
-            //return context.Set<FavouriteMovie>().Find(userId);
+            List<FavouriteMovie> favouriteMoviesByUserName = _context.FavouriteMovies.Where(f => f.UserName == userName).ToList();
+            return favouriteMoviesByUserName;
+        }
+
+        public bool GetByUserNameAndMovie(string userName, string movie)
+        {
+            var favMovies = from fm in _context.FavouriteMovies
+                            select fm;
+
+            var favMoviesList = favMovies.Where(fm => fm.UserName.Contains(userName) && fm.Title.Contains(movie)).Any();
+            return favMoviesList;
         }
     }
 }

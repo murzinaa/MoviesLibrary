@@ -37,17 +37,22 @@ namespace MoviesLibrary.Web.Controllers
             _manager = manager;
             _apiMovieProvider = apiMovieProvider;
         }
-        private async Task<IActionResult> ReturnResult(string movie)
+        private async Task<IActionResult> ReturnResult(string movie, string view)
         {
             //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
 
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-            return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel
+            { 
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
+            };
+            //return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            return View($"{view}", movieResultViewModel);
         }
-        private async Task<UserRegistration> GetCurrentUser()
-        {
-            return await _manager.GetUserAsync(HttpContext.User);
-        }
+        //private async Task<UserRegistration> GetCurrentUser()
+        //{
+        //    return await _manager.GetUserAsync(HttpContext.User);
+        //}
         [HttpGet]
         public IActionResult AddToFavourite()
         {
@@ -57,31 +62,41 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddToFavourite(string movie)
+        public async Task<IActionResult> AddToFavourite(string movieTitle)
         {
-            var user = await GetCurrentUser();
-            string userName = user.UserName;
-            User user1 = new User { UserName = userName };
-            user1 = await _userService.GetCurrentUser(user1);
-            //_userService.AddUser(user1);
-            Movie movie1 = new Movie { Title = movie };
-            //_movieService.AddMovie(movie1);
+            //var user = await GetCurrentUser();
+            //string userName = user.UserName;
+            ClaimsPrincipal currentUser = User;
+            var userName = currentUser.FindFirst(ClaimTypes.Email).Value;
+
+            User user = new User 
+            { 
+                UserName = userName 
+            };
+            user = await _userService.GetCurrentUser(user);
+
+            Movie movie1 = new Movie 
+            { 
+                Title = movieTitle 
+            };
             movie1 = await _movieService.GetCurrentMovie(movie1);
-            FavouriteMovie favouriteMovie = new FavouriteMovie { UserId = user1.Id, MovieId = movie1.Id, UserName = user1.UserName, Title = movie1.Title };
+
+            FavouriteMovie favouriteMovie = new FavouriteMovie 
+            {
+                UserId = user.Id,
+                MovieId = movie1.Id, 
+                UserName = user.UserName, 
+                Title = movie1.Title 
+            };
             _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
 
-            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-            //return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            return await ReturnResult(movieTitle, "Views/FavMovies/FavouriteMovieResult.cshtml");
+            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
+            //{ MovieComments = (await _commentService.GetCommentsByMovieTitle(movieTitle)).ToList(), 
+            //    ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movieTitle)) 
+            //};
+            //return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
 
-            //return await ReturnResult(movie);
-
-            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
-            return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
-
-
-            //return RedirectToAction();
         }
 
         
@@ -98,34 +113,40 @@ namespace MoviesLibrary.Web.Controllers
         {
             ClaimsPrincipal currentUser = User;
             var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
+
             User user = new User { UserName = userEmail };
             user = await _userService.GetCurrentUser(user);
 
-            //_userService.AddUser(user);
             Movie movie1 = new Movie { Title = movie };
             movie1 = await _movieService.GetCurrentMovie(movie1);
 
-            //_movieService.AddMovie(movie1);
 
-            Comment comment1 = new Comment { Body = comment, UserId = user.Id, MovieId = movie1.Id, UserName = userEmail, MovieTitle = movie };
+            Comment comment1 = new Comment 
+            { Body = comment, 
+                UserId = user.Id, 
+                MovieId = movie1.Id, 
+                UserName = userEmail, 
+                MovieTitle = movie 
+            };
+
             _commentService.AddComment(comment1);
-            return await ReturnResult(movie);
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
 
         }
 
 
-        [HttpGet]
-        public IActionResult NextPage()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult NextPage()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> NextPage(int page)
-        {
-            return View();
+        //[HttpPost]
+        //public async Task<IActionResult> NextPage(int page)
+        //{
+        //    return View();
 
-        }
+        //}
 
     }
 }

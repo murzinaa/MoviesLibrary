@@ -19,7 +19,7 @@
 
 
 <form method="POST">
-    <input type="hidden" name="movie" value=@Model.ResultById.Id />
+    <input type="hidden" name="movieTitle" value=@Model.ResultById.Id />
     @*<button type="submit" class="btn btn-outline-info" asp-controller="Categories" asp-action="AddToFavourite">Add to favourite</button>*@
     <button type="submit" class="btn btn-outline-info" asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
 </form>

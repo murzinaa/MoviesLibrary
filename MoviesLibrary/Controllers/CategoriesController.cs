@@ -21,16 +21,16 @@ namespace MoviesLibrary.Web.Controllers
         private readonly IApiMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
         private readonly ICommentService _commentService;
-        private readonly MovieContext _context;
+        private readonly IFavouriteMovieService _favouriteMovieService;
 
 
-        public CategoriesController(ILogger<CategoriesController> logger, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService, MovieContext context)
+        public CategoriesController(ILogger<CategoriesController> logger, IFavouriteMovieService favouriteMovieService, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
             _commentService = commentService;
-            _context = context;
+            _favouriteMovieService = favouriteMovieService;
         }
 
         public IActionResult Index()
@@ -42,19 +42,21 @@ namespace MoviesLibrary.Web.Controllers
         {
            
             var genreEnum = Convert.ToInt32((Genres)Enum.Parse(typeof(Genres), genre));
-            MovieViewModel movieViewModel = new MovieViewModel { Genre = genre, MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)) };
+            MovieViewModel movieViewModel = new MovieViewModel 
+            { 
+                Genre = genre, 
+                MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)) 
+            };
             return View("Views/Movie/Movie.cshtml", movieViewModel);
-
-            //return View("Views/Movie/Movie.cshtml", await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)));
         }
 
         private async Task<IActionResult> ReturnResult(string movie, string view)
         {
-            //MovieResultViewModel movieResultViewModel = new MovieResultViewModel { };
-            //movieResultViewModel.ResultById = await _apiMovieProvider.GetMoviesWithVideos(FilmApiUrls.ReturnUrlForMovieResult(movie));
-            //movieResultViewModel.MovieComments = await _commentService.GetCommentsByMovieTitle(movie);
-
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) };
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
+            { 
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
+            };
             return View($"{view}", movieResultViewModel);
         }
 
@@ -72,13 +74,7 @@ namespace MoviesLibrary.Web.Controllers
             if (currentUser.Identity.Name != null)
             {
                 var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
-
-                var favMovies = from fm in _context.FavouriteMovies
-                                select fm;
-
-
-                var favMoviesList = favMovies.Where(fm => fm.UserName.Contains(userEmail) && fm.Title.Contains(movie)).Any();
-                if (favMoviesList)
+                if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
                     return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
                 }

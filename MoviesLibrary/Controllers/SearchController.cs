@@ -26,10 +26,12 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string movie, int page=1)
         {
-            SearchViewModel searchViewModel = new SearchViewModel { MovieTitle = movie, SearchMovieResult = await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(movie, page)) };
-            //return View("Views/Search/SearchResult.cshtml", await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(title, page)));
+            SearchViewModel searchViewModel = new SearchViewModel 
+            {
+                MovieTitle = movie, 
+                SearchMovieResult = await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(movie, page)) 
+            };
             return View("Views/Search/SearchResult.cshtml", searchViewModel);
-            //return View("Views/Movie/Movie.cshtml", await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(title)));
         }
     }
 }

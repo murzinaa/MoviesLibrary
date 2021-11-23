@@ -2,6 +2,6 @@
 {
     public interface IMovieResultService
     {
-
+        void ReturnMovieResult(string movie);
     }
 }

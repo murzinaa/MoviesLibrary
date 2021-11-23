@@ -28,6 +28,22 @@ namespace MoviesLibrary.Web.Controllers
             _commentService = commentService;
             _favouriteMovieService = favouriteMovieService;
         }
+        private string GetCurrentUserName()
+        {
+            ClaimsPrincipal currentUser = User;
+            var userName = currentUser.FindFirst(ClaimTypes.Email).Value;
+            return userName;
+        }
+        private async Task<IActionResult> ReturnResult(string movie, string view)
+        {
+            MovieResultViewModel movieResultViewModel = new MovieResultViewModel
+            {
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie))
+            };
+            return View($"{view}", movieResultViewModel);
+        }
+
         public async Task<IActionResult> Favourite()
         {
             ClaimsPrincipal currentUser = User;
@@ -53,12 +69,7 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FavouriteMovieResult(string movie)
         {
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
-            { 
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
-            };
-            return View("Views/FavMovies/FavouriteMovieResult.cshtml", movieResultViewModel);
+            return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
         }
 
         [HttpGet]
@@ -72,11 +83,25 @@ namespace MoviesLibrary.Web.Controllers
         public async Task<IActionResult> RemoveFromFavourite(string movie)
         {
             await _favouriteMovieService.DeleteFavouriteMovie(movie);
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
-            { MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
-            };
-            return View("Views/Categories/MovieResult.cshtml", movieResultViewModel);
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+        }
+
+        public IActionResult DeleteComment()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId, string userName, string movie)
+        {
+            if (GetCurrentUserName() == userName)
+            {
+                _commentService.DeleteComment(_commentService.GetById(commentId));
+
+            }
+            return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
+            //return RedirectToAction("Index", "Home");
         }
     }
 }

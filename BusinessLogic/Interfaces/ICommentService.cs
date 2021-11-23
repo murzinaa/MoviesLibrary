@@ -8,5 +8,8 @@ namespace MoviesLibrary.BusinessLogic.Interfaces
     {
         void AddComment(Comment comment);
         Task<List<Comment>> GetCommentsByMovieTitle(string title);
+        void EditComment(int id, string body);
+        void DeleteComment(Comment comment);
+        Comment GetById(int id);
     }
 }

@@ -1,4 +1,4 @@
-﻿@model MoviesLibrary.Web.ViewModels.MovieResultViewModel
+﻿@model MoviesLibrary.Web.Models.EditCommentViewModel
 <h4>@Model.ResultById.OriginalTitle</h4>
 <img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.PosterPath) width="200" height="300" alt=" " />
 <p><b>Original language: </b>@Model.ResultById.OriginalLanguage</p>
@@ -35,14 +35,28 @@
 </form>
 @for (int i = 0; i < Model.MovieComments.Count; i++)
 {
-    <h6>@Model.MovieComments[i].UserName</h6>
-    <p>@Model.MovieComments[i].Body</p>
-    <form method="post">
-        <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
-        <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
-        <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
+    if (Model.MovieComments[i].Id == Model.id)
+    {
+        <h6>@Model.MovieComments[i].UserName</h6>
+        <form method="post">
+            <input type="text" class="form-control" name="commentBody" required />
+            <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
+            <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
+            <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
+            <input type="submit" class="btn btn-outline-info" value="Save" asp-controller="MovieResult" asp-action="SaveEditedComment" /><br /><br />
 
-        <input type="submit" class="btn btn-outline-info" value="Edit" asp-controller="MovieResult" asp-action="EditComment" />
-        <input type="submit" class="btn btn-outline-info" value="Delete" asp-controller="MovieResult" asp-action="DeleteComment" /><br /><br />
-    </form>
-}
+        </form>
+    }
+    else
+    {
+        <h6>@Model.MovieComments[i].UserName</h6>
+        <p>@Model.MovieComments[i].Body</p>
+        <form method="post">
+            <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
+            <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
+            <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
+            <input type="submit" class="btn btn-outline-info" value="Delete" asp-controller="MovieResult" asp-action="DeleteComment" /><br /><br />
+        </form>
+    }
+
+ }

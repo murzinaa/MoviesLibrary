@@ -33,14 +33,27 @@ namespace MoviesLibrary.Web.Controllers
             _favouriteMovieService = favouriteMovieService;
             _apiMovieProvider = apiMovieProvider;
         }
-        private async Task<IActionResult> ReturnResult(string movie, string view)
+        //private async Task<IActionResult> ReturnResult(string movie, string view)
+        //{
+        //    MovieResultViewModel movieResultViewModel = new MovieResultViewModel
+        //    {
+        //        MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+        //        ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie))
+        //    };
+        //    return View($"{view}", movieResultViewModel);
+        //}
+
+        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false, int id = 0)
         {
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel
-            { 
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
+            SharedViewModel sharedViewModel = new SharedViewModel
+            {
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
+                EditComment = editComment,
+                IsInFavourite = inFavourite,
+                CommentId = id
             };
-            return View($"{view}", movieResultViewModel);
+            return View($"{view}", sharedViewModel);
         }
 
         private string GetCurrentUserName()
@@ -84,11 +97,13 @@ namespace MoviesLibrary.Web.Controllers
             };
             _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
 
-            return await ReturnResult(movieTitle, "Views/FavMovies/FavouriteMovieResult.cshtml");
+            //return await ReturnResult(movieTitle, "Views/FavMovies/FavouriteMovieResult.cshtml", inFavourite:true);
+            return await ReturnResult(movieTitle, "Views/Categories/MovieResult.cshtml", inFavourite: true);
+
 
         }
 
-        
+
         [Authorize]
         [HttpGet]
         public IActionResult AddComment()
@@ -98,7 +113,7 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(string comment, string movie)
+        public async Task<IActionResult> AddComment(string comment, string movie, bool isInFavourite)
         {
             string userEmail = GetCurrentUserName();
 
@@ -118,7 +133,7 @@ namespace MoviesLibrary.Web.Controllers
             };
 
             _commentService.AddComment(comment1);
-            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite: isInFavourite);
 
         }
 
@@ -131,14 +146,14 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> DeleteComment(int commentId, string userName, string movie)
+        public async Task<IActionResult> DeleteComment(int commentId, string userName, string movie, bool isInFavourite)
         {
             if (GetCurrentUserName() == userName)
             {
                 _commentService.DeleteComment(_commentService.GetById(commentId));
                 
             }
-            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite: isInFavourite);
             //return RedirectToAction("Index", "Home");
         }
 
@@ -151,7 +166,7 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> EditComment(int commentId, string userName, string movie, string body)
+        public async Task<IActionResult> EditComment(int commentId, string userName, string movie, string body, bool isInFavourite, bool editComment)
         {
             if (GetCurrentUserName() == userName)
             {
@@ -162,11 +177,13 @@ namespace MoviesLibrary.Web.Controllers
                     ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
                     id = commentId
                 };
-                return View("Views/Categories/EditComment.cshtml", movieResultViewModel);
+                //return View("Views/Categories/EditComment.cshtml", movieResultViewModel, editComment: edit);
+                return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite: isInFavourite, editComment: editComment, 
+                    id: commentId);
 
             }
 
-            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite: isInFavourite);
             //return RedirectToAction("Index", "Home");
         }
 
@@ -179,21 +196,21 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SaveEditedComment(int commentId, string userName, string movie, string commentBody)
+        public async Task<IActionResult> SaveEditedComment(int commentId, string userName, string movie, string commentBody, bool isInFavourite)
         {
             if (GetCurrentUserName() == userName)
             {
                 _commentService.EditComment(commentId, commentBody);
-                EditCommentViewModel movieResultViewModel = new EditCommentViewModel
-                {
-                    MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
-                    ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
-                    id = commentId
-                };
+                //EditCommentViewModel movieResultViewModel = new EditCommentViewModel
+                //{
+                //    MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+                //    ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
+                //    id = commentId
+                //};
 
             }
 
-            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+            return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite: isInFavourite);
             //return RedirectToAction("Index", "Home");
         }
 

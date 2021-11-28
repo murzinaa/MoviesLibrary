@@ -50,15 +50,28 @@ namespace MoviesLibrary.Web.Controllers
             return View("Views/Movie/Movie.cshtml", movieViewModel);
         }
 
-        private async Task<IActionResult> ReturnResult(string movie, string view)
+        //private async Task<IActionResult> ReturnResult(string movie, string view)
+        //{
+        //    MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
+        //    { 
+        //        MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
+        //        ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
+        //    };
+        //    return View($"{view}", movieResultViewModel);
+        //}
+
+        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false)
         {
-            MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
-            { 
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
+            SharedViewModel sharedViewModel = new SharedViewModel
+            {
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
+                EditComment = editComment,
+                IsInFavourite = inFavourite
             };
-            return View($"{view}", movieResultViewModel);
+            return View($"{view}", sharedViewModel);
         }
+
 
         [HttpGet]
         public IActionResult MovieResult()
@@ -76,18 +89,12 @@ namespace MoviesLibrary.Web.Controllers
                 var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
                 if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
-                    return await ReturnResult(movie, "Views/FavMovies/FavouriteMovieResult.cshtml");
+                    return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite:true);
                 }
-                else
-                {
-                    return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
-                }
-            }
-
-            else
-            {
                 return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
             }
+
+             return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
 
         }
 

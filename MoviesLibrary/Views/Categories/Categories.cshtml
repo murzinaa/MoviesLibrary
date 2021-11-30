@@ -6,21 +6,23 @@
 
     <p>
         Here will be categories of movies.
-        <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Action" asp-route-page=1 >Action</a>
+    </p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Action" asp-route-page=1>Action</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Adventure" asp-route-page=1>Adventure</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Animation" asp-route-page=1>Animation</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Comedy" asp-route-page=1>Comedy</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Crime" asp-route-page=1>Crime</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Adventure" asp-route-page=1>Drama</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Documentary" asp-route-page=1>Documentary</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Fantasy" asp-route-page=1>Fantasy</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Horror" asp-route-page=1>Horror</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Romance" asp-route-page=1>Romance</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Thriller" asp-route-page=1>Thriller</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="GetByGenreAction" asp-route-genre="Western" asp-route-page=1>Western</a>
-        <form method="GET">
-            <button type="submit" class="btn btn-outline-info" asp-action="Index">Home</button>
-        </form>
-    </p>
+
+    
+
+    <form method="GET">
+        <button type="submit" class="btn btn-outline-info" asp-controller="Home" asp-action="Index">Home</button>
+    </form>
 
 </div>

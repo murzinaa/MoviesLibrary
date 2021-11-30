@@ -1,14 +1,25 @@
 ﻿@model MoviesLibrary.Web.Models.SharedViewModel
-
 <h4>@Model.ResultById.OriginalTitle</h4>
 <img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.PosterPath) width="200" height="300" alt=" " />
 <p><b>Original language: </b>@Model.ResultById.OriginalLanguage</p>
+<p> <b>Genres: </b> 
+    @for (int genre = 0; genre < Model.ResultById.Genres.Count ; genre++)
+    {
+        @Model.ResultById.Genres[genre].Name
+        if (genre < Model.ResultById.Genres.Count-1)
+        {
+            @(", ")
+        }
+    }
+ </p>
 <p><b>Description: </b>@Model.ResultById.Overview</p>
 <p><b>Popularity: </b>@Model.ResultById.Popularity</p>
 <p><b>Release Date: </b>@Model.ResultById.ReleaseDate</p>
 <p><b>Average Vote: </b>@Model.ResultById.VoteAverage</p>
 <p><b>Count of Votes: </b>@Model.ResultById.VoteCount</p>
 <br />
+
+
 
 @if (Model.ResultById.Videos.Results.Count > 0)
 {
@@ -31,10 +42,11 @@ else
 {
 
     <h6>If you liked the movie, you can add it to your favorites</h6>
-    <form method="POST">
+    <form method="POST" id="favouriteForm">
         <input type="hidden" name="movieTitle" value=@Model.ResultById.Id />
         <button type="submit" class="btn btn-outline-info" asp-route-isInFavourite=@false asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
     </form>
+
 }
 <br />
 <br />
@@ -43,6 +55,7 @@ else
     <h4>Add a comment</h4>
     <input type="text" class="form-control" name="comment" required placeholder="Type your comment here" /><br />
     <input type="hidden" name="movie" value=@Model.ResultById.Id />
+    <input type="hidden" name="isInFavourite" value=@Model.IsInFavourite />
     <input type="submit" class="btn btn-outline-info" value="Add" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
 </form>
 
@@ -75,4 +88,3 @@ else
 
 
 }
-

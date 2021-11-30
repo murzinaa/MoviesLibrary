@@ -3,9 +3,7 @@ using Microsoft.Extensions.Logging;
 using MoviesLibrary.APIProviders;
 using MoviesLibrary.BusinessLogic.Interfaces;
 using MoviesLibrary.BusinessLogic.Utils;
-using MoviesLibrary.DataAccess;
 using MoviesLibrary.Web.Models;
-using MoviesLibrary.Web.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -22,15 +20,29 @@ namespace MoviesLibrary.Web.Controllers
         private readonly ICategoriesService _categoriesService;
         private readonly ICommentService _commentService;
         private readonly IFavouriteMovieService _favouriteMovieService;
+        private readonly SettingService _settingService;
 
 
-        public CategoriesController(ILogger<CategoriesController> logger, IFavouriteMovieService favouriteMovieService, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService)
+        public CategoriesController(ILogger<CategoriesController> logger, IFavouriteMovieService favouriteMovieService, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService, SettingService settingService)
         {
             _logger = logger;
             _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
             _commentService = commentService;
             _favouriteMovieService = favouriteMovieService;
+            _settingService = settingService;
+        }
+
+        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false)
+        {
+            SharedViewModel sharedViewModel = new SharedViewModel
+            {
+                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
+                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie, _settingService.ApiKey)),
+                EditComment = editComment,
+                IsInFavourite = inFavourite
+            };
+            return View($"{view}", sharedViewModel);
         }
 
         public IActionResult Index()
@@ -45,31 +57,9 @@ namespace MoviesLibrary.Web.Controllers
             MovieViewModel movieViewModel = new MovieViewModel 
             { 
                 Genre = genre, 
-                MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page)) 
+                MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page, _settingService.ApiKey)) 
             };
-            return View("Views/Movie/Movie.cshtml", movieViewModel);
-        }
-
-        //private async Task<IActionResult> ReturnResult(string movie, string view)
-        //{
-        //    MovieResultViewModel movieResultViewModel = new MovieResultViewModel 
-        //    { 
-        //        MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(), 
-        //        ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)) 
-        //    };
-        //    return View($"{view}", movieResultViewModel);
-        //}
-
-        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false)
-        {
-            SharedViewModel sharedViewModel = new SharedViewModel
-            {
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie)),
-                EditComment = editComment,
-                IsInFavourite = inFavourite
-            };
-            return View($"{view}", sharedViewModel);
+            return View("Views/Categories/Movie.cshtml", movieViewModel);
         }
 
 
@@ -89,12 +79,10 @@ namespace MoviesLibrary.Web.Controllers
                 var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
                 if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
-                    return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml", inFavourite:true);
+                    return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
                 }
-                return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
             }
-
-             return await ReturnResult(movie, "Views/Categories/MovieResult.cshtml");
+             return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
 
         }
 

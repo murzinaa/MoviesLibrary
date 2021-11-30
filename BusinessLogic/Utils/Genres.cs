@@ -8,7 +8,6 @@
         Comedy = 35,
         Crime = 80,
         Drama = 18,
-        Documentary = 99,
         Fantasy = 14,
         Horror = 27,
         Romance = 10749,

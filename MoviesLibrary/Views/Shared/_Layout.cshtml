@@ -29,12 +29,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Search" asp-action="Search">Search</a>
                         </li>
-                        @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
-        </li>*@
-                        @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories">Categories</a>
-        </li>*@
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
@@ -44,22 +39,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Trending" asp-action="TrendingMovies">Trending</a>
                         </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
 
                         @if (User.Identity.IsAuthenticated)
                         {
 
-                            @*<form method="post" asp-controller="Account" asp-action="Logout">
-            <input type="submit" value="Выход" />*@
-                            <form method="post" asp-controller="Account" asp-action="Logout">
                             <li class="nav-item">
-                                <input type="submit" class="btn-danger" asp-controller="Account" asp-action="Logout" value="Выход" />
-                                @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>*@
+                                <form class="form-inline"  asp-area="" asp-controller="Account" asp-action="Logout"
+                                      method="post">
+                                    <button type="submit"  class="nav-link btn btn-link text-danger" >Logout</button>
+                                </form>
                             </li>
-                            </form>
                         }
+
                         else
                         {
                             <li class="nav-item">
@@ -82,7 +73,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - MoviesLibrary - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - MoviesLibrary
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

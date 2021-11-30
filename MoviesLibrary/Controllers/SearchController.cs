@@ -29,7 +29,7 @@ namespace MoviesLibrary.Web.Controllers
             SearchViewModel searchViewModel = new SearchViewModel 
             {
                 MovieTitle = movie, 
-                SearchMovieResult = await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(movie, page)) 
+                SearchMovieResult = await _apiMovieProvider.GetMovieList(FilmApiUrls.ReturnUrlForSearch(movie, page, _settingService.ApiKey)) 
             };
             return View("Views/Search/SearchResult.cshtml", searchViewModel);
         }

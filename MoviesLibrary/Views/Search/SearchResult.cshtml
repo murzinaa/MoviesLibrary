@@ -1,9 +1,25 @@
 ﻿@model SearchViewModel
+
+@if (Model.SearchMovieResult.Results.Count == 0)
+{
+    <center>
+    <h4 style="color:red">"@(Model.MovieTitle)"was not found</h4>
+        <p>Sorry, nothing matched your specified input. Please modify your search text and try again.</p>
+    </center>
+    <form method="post">
+        <center>
+            <label>You can try again</label><br />
+            <input type="text" name="movie" required /><br /><br />
+            <input type="submit" class="btn btn-outline-info" value="Find the film" /><br /><br />
+
+        </center>
+    </form>
+}
 <span style="display:inline">
     @for (int i = 0; i < Model.SearchMovieResult.Results.Count; i++)
     {
         <form method="post" style="display:inline">
-            <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" asp-route-movie=@Model.SearchMovieResult.Results[i].Id 
+            <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" asp-route-movie=@Model.SearchMovieResult.Results[i].Id
                     style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.SearchMovieResult.Results[i].PosterPath));width:200px; height:300px;" ;></button>
 
         </form>
@@ -11,7 +27,7 @@
 </span>
 
 
-@if (Model.SearchMovieResult.Page == Model.SearchMovieResult.TotalPages && Model.SearchMovieResult.TotalPages != 1)
+@if (Model.SearchMovieResult.Page == Model.SearchMovieResult.TotalPages && Model.SearchMovieResult.TotalPages > 1)
 {
     <center>
         <form method="POST">
@@ -19,7 +35,7 @@
         </form>
     </center>
 }
-else if (Model.SearchMovieResult.Page == 1 && Model.SearchMovieResult.TotalPages != 1)
+else if (Model.SearchMovieResult.Page == 1 && Model.SearchMovieResult.TotalPages > 1)
 {
     <center>
         <form method="POST">
@@ -27,7 +43,7 @@ else if (Model.SearchMovieResult.Page == 1 && Model.SearchMovieResult.TotalPages
         </form>
     </center>
 }
-else if (Model.SearchMovieResult.TotalPages != 1)
+else if (Model.SearchMovieResult.TotalPages > 1)
 {
     <center>
         <form method="POST">

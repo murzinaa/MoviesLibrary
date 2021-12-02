@@ -8,10 +8,10 @@ namespace MoviesLibrary.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<UserRegistration> _userManager;
-        private readonly SignInManager<UserRegistration> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<UserRegistration> userManager, SignInManager<UserRegistration> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -26,7 +26,7 @@ namespace MoviesLibrary.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserRegistration user = new UserRegistration { Email = model.Email, UserName = model.Email };
+                User user = new User { Email = model.Email, UserName = model.Email };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

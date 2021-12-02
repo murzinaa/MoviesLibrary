@@ -32,7 +32,7 @@ namespace MoviesLibrary.BusinessLogic.Services
             _context.SaveChanges();
         }
 
-        public void EditComment(int id, string body = "hello")
+        public void EditComment(int id, string body)
         {
             var comment = _context.Comments.FirstOrDefault(c => c.Id == id);
             if (comment != null)

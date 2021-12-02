@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MoviesLibrary.APIProviders;
 using MoviesLibrary.BusinessLogic.Interfaces;
 using MoviesLibrary.BusinessLogic.Utils;
+using MoviesLibrary.Web.Helpers;
 using MoviesLibrary.Web.Models;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using static MoviesLibrary.BusinessLogic.Utils.Constants;
@@ -15,35 +13,20 @@ namespace MoviesLibrary.Web.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ILogger<CategoriesController> _logger;
-        private readonly IApiMovieProvider _apiMovieProvider;
         private readonly ICategoriesService _categoriesService;
-        private readonly ICommentService _commentService;
         private readonly IFavouriteMovieService _favouriteMovieService;
         private readonly SettingService _settingService;
+        private readonly MoviesHelper _moviesHelper;
 
 
-        public CategoriesController(ILogger<CategoriesController> logger, IFavouriteMovieService favouriteMovieService, IApiMovieProvider apiMovieProvider, ICategoriesService categoriesService, ICommentService commentService, SettingService settingService)
+        public CategoriesController(IFavouriteMovieService favouriteMovieService, ICategoriesService categoriesService, SettingService settingService, MoviesHelper moviesHelper)
         {
-            _logger = logger;
-            _apiMovieProvider = apiMovieProvider;
             _categoriesService = categoriesService;
-            _commentService = commentService;
             _favouriteMovieService = favouriteMovieService;
             _settingService = settingService;
+            _moviesHelper = moviesHelper;
         }
 
-        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false)
-        {
-            SharedViewModel sharedViewModel = new SharedViewModel
-            {
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie, _settingService.ApiKey)),
-                EditComment = editComment,
-                IsInFavourite = inFavourite
-            };
-            return View($"{view}", sharedViewModel);
-        }
 
         public IActionResult Index()
         {
@@ -54,12 +37,14 @@ namespace MoviesLibrary.Web.Controllers
         {
            
             var genreEnum = Convert.ToInt32((Genres)Enum.Parse(typeof(Genres), genre));
-            MovieViewModel movieViewModel = new MovieViewModel 
+
+            GenreViewModel genreViewModel = new GenreViewModel 
             { 
                 Genre = genre, 
                 MovieResultVM = await _categoriesService.GetCategoriesByGenre(FilmApiUrls.ReturnUrl(genreEnum, page, _settingService.ApiKey)) 
             };
-            return View("Views/Categories/Movie.cshtml", movieViewModel);
+
+            return View("Views/Categories/CategoriesResult.cshtml", genreViewModel);
         }
 
 
@@ -73,16 +58,25 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> MovieResult(string movie)
         {
+            const string view = "Views/Shared/MovieResult.cshtml";
             ClaimsPrincipal currentUser = User;
             if (currentUser.Identity.Name != null)
             {
                 var userEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
+
                 if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
-                    return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
+                    return View(view, await _moviesHelper.GetMovieViewModel(movie, inFavourite: true));
+
+                    //return View(view, await GetMovieViewModel(movie, inFavourite:true));
+                    //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
                 }
             }
-             return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
+
+            return View(view, await _moviesHelper.GetMovieViewModel(movie));
+
+            //return View(view, await GetMovieViewModel(movie));
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
 
         }
 

@@ -45,12 +45,14 @@ namespace MoviesLibrary
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<MoviesHelper>();
 
+            services.AddTransient<UserHelper>();
+            services.AddHttpContextAccessor();
             // add swagger;
 
 
-            
 
-           // services.AddSwaggerGen();
+
+            // services.AddSwaggerGen();
 
             services.AddControllersWithViews();
         }

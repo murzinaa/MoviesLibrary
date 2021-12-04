@@ -15,22 +15,24 @@ namespace MoviesLibrary.Web.Controllers
         private readonly IMovieService _movieService;
         private readonly IFavouriteMovieService _favouriteMovieService;
         private readonly MoviesHelper _moviesHelper;
+        private readonly UserHelper _userHelper;
 
-        public MovieResultController(ICommentService commentService, IMovieService movieService, IUserService userService, IFavouriteMovieService favouriteMovieService, MoviesHelper moviesHelper)
+        public MovieResultController(ICommentService commentService, IMovieService movieService, IUserService userService, IFavouriteMovieService favouriteMovieService, MoviesHelper moviesHelper, UserHelper userHelper)
         {
             _commentService = commentService;
             _movieService = movieService;
             _userService = userService;
             _favouriteMovieService = favouriteMovieService;
             _moviesHelper = moviesHelper;
+            _userHelper = userHelper;
         }
-        
-        private string GetCurrentUserName()
-        {
-            ClaimsPrincipal currentUser = User;
-            var userName = currentUser.FindFirst(ClaimTypes.Email).Value;
-            return userName;
-        }
+
+        //private string GetCurrentUserName()
+        //{
+        //    ClaimsPrincipal currentUser = User;
+        //    var userName = currentUser.FindFirst(ClaimTypes.Email).Value;
+        //    return userName;
+        //}
         [HttpGet]
         public IActionResult AddToFavourite()
         {
@@ -43,7 +45,7 @@ namespace MoviesLibrary.Web.Controllers
         public async Task<IActionResult> AddToFavourite(string movieTitle)
         {
 
-            string userName = GetCurrentUserName();
+            string userName = _userHelper.GetCurrentUser();
 
             User user = new User 
             { 
@@ -85,7 +87,7 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(string comment, string movie, bool isInFavourite)
         {
-            string userEmail = GetCurrentUserName();
+            string userEmail = _userHelper.GetCurrentUser();
 
             User user = new User { UserName = userEmail };
             user = await _userService.GetCurrentUser(user);
@@ -121,7 +123,7 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteComment(int commentId, string userName, string movie, bool isInFavourite)
         {
-            if (GetCurrentUserName() == userName)
+            if (_userHelper.GetCurrentUser() == userName)
             {
                 _commentService.DeleteComment(_commentService.GetById(commentId));
                 
@@ -143,7 +145,7 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditComment(int commentId, string userName, string movie, bool isInFavourite, bool editComment)
         {
-            if (GetCurrentUserName() == userName)
+            if (_userHelper.GetCurrentUser() == userName)
             {
                 return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite, 
                     editComment: editComment, id: commentId));
@@ -168,7 +170,7 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEditedComment(int commentId, string userName, string movie, string commentBody, bool isInFavourite)
         {
-            if (GetCurrentUserName() == userName)
+            if (_userHelper.GetCurrentUser() == userName)
             {
                 _commentService.EditComment(commentId, commentBody);
             }

@@ -10,6 +10,7 @@ using MoviesLibrary.BusinessLogic.Interfaces;
 using MoviesLibrary.BusinessLogic.Services;
 using MoviesLibrary.DataAccess;
 using MoviesLibrary.DataAccess.Entities;
+using MoviesLibrary.Web.Helpers;
 
 namespace MoviesLibrary
 {
@@ -29,7 +30,7 @@ namespace MoviesLibrary
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
                 ServiceLifetime.Transient);
-            services.AddIdentity<UserRegistration, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MovieContext>();
 
@@ -42,6 +43,7 @@ namespace MoviesLibrary
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IFavouriteMovieService, FavouriteMovieService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<MoviesHelper>();
 
             // add swagger;
 

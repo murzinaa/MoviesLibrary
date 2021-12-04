@@ -1,30 +1,30 @@
-﻿@model MoviesLibrary.Web.Models.SharedViewModel
-<h4>@Model.ResultById.OriginalTitle</h4>
-<img src=@("https://image.tmdb.org/t/p/original"+@Model.ResultById.PosterPath) width="200" height="300" alt=" " />
-<p><b>Original language: </b>@Model.ResultById.OriginalLanguage</p>
+﻿@model MoviesLibrary.Web.Models.MovieViewModel
+<h4>@Model.MovieList.OriginalTitle</h4>
+<img src=@("https://image.tmdb.org/t/p/original"+@Model.MovieList.PosterPath) width="200" height="300" alt=" " />
+<p><b>Original language: </b>@Model.MovieList.OriginalLanguage</p>
 <p> <b>Genres: </b> 
-    @for (int genre = 0; genre < Model.ResultById.Genres.Count ; genre++)
+    @for (int genre = 0; genre < Model.MovieList.Genres.Count ; genre++)
     {
-        @Model.ResultById.Genres[genre].Name
-        if (genre < Model.ResultById.Genres.Count-1)
+        @Model.MovieList.Genres[genre].Name
+        if (genre < Model.MovieList.Genres.Count-1)
         {
             @(", ")
         }
     }
  </p>
-<p><b>Description: </b>@Model.ResultById.Overview</p>
-<p><b>Popularity: </b>@Model.ResultById.Popularity</p>
-<p><b>Release Date: </b>@Model.ResultById.ReleaseDate</p>
-<p><b>Average Vote: </b>@Model.ResultById.VoteAverage</p>
-<p><b>Count of Votes: </b>@Model.ResultById.VoteCount</p>
+<p><b>Description: </b>@Model.MovieList.Overview</p>
+<p><b>Popularity: </b>@Model.MovieList.Popularity</p>
+<p><b>Release Date: </b>@Model.MovieList.ReleaseDate</p>
+<p><b>Average Vote: </b>@Model.MovieList.VoteAverage</p>
+<p><b>Count of Votes: </b>@Model.MovieList.VoteCount</p>
 <br />
 
 
 
-@if (Model.ResultById.Videos.Results.Count > 0)
+@if (Model.MovieList.Videos.Results.Count > 0)
 {
     <iframe width="560" height="315"
-            src=@("https://www.youtube.com/embed/"+Model.ResultById.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
+            src=@("https://www.youtube.com/embed/"+Model.MovieList.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
             autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
     <br />
@@ -34,7 +34,7 @@
 @if (Model.IsInFavourite)
 {
     <form method="POST">
-        <input type="hidden" name="movie" value=@Model.ResultById.Id />
+        <input type="hidden" name="movie" value=@Model.MovieList.Id />
         <button type="submit" class="btn btn-outline-info" asp-route-isInFavourite=@true asp-controller="FavMovies" asp-action="RemoveFromFavourite">Remove from favourite</button>
     </form>
 }
@@ -43,7 +43,7 @@ else
 
     <h6>If you liked the movie, you can add it to your favorites</h6>
     <form method="POST" id="favouriteForm">
-        <input type="hidden" name="movieTitle" value=@Model.ResultById.Id />
+        <input type="hidden" name="movieTitle" value=@Model.MovieList.Id />
         <button type="submit" class="btn btn-outline-info" asp-route-isInFavourite=@false asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
     </form>
 
@@ -54,8 +54,7 @@ else
 <form method="post">
     <h4>Add a comment</h4>
     <input type="text" class="form-control" name="comment" required placeholder="Type your comment here" /><br />
-    <input type="hidden" name="movie" value=@Model.ResultById.Id />
-    <input type="hidden" name="isInFavourite" value=@Model.IsInFavourite />
+    <input type="hidden" name="movie" value=@Model.MovieList.Id />
     <input type="submit" class="btn btn-outline-info" value="Add" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
 </form>
 

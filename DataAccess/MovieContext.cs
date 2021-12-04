@@ -5,7 +5,7 @@ using MoviesLibrary.DataAccess.Entities;
 
 namespace MoviesLibrary.DataAccess
 {
-    public class MovieContext : IdentityDbContext<UserRegistration>
+    public class MovieContext : IdentityDbContext<User>
     {
         public MovieContext()
         {
@@ -20,7 +20,7 @@ namespace MoviesLibrary.DataAccess
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<FavouriteMovie> FavouriteMovies { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        //public virtual DbSet<User> Users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

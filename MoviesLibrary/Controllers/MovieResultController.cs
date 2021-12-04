@@ -1,53 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MoviesLibrary.APIProviders;
 using MoviesLibrary.BusinessLogic.Interfaces;
-using MoviesLibrary.DataAccess;
 using MoviesLibrary.DataAccess.Entities;
-using MoviesLibrary.Web.Models;
-using System.Linq;
+using MoviesLibrary.Web.Helpers;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static MoviesLibrary.BusinessLogic.Utils.Constants;
 
 namespace MoviesLibrary.Web.Controllers
 {
     public class MovieResultController : Controller
     {
-        private readonly ILogger<MovieResultController> _logger;
-        private readonly ICommentService _commentService;
+         private readonly ICommentService _commentService;
         private readonly IUserService _userService;
         private readonly IMovieService _movieService;
         private readonly IFavouriteMovieService _favouriteMovieService;
-        private readonly IApiMovieProvider _apiMovieProvider;
-        private readonly SettingService _settingService;
+        private readonly MoviesHelper _moviesHelper;
 
-        public MovieResultController(ILogger<MovieResultController> logger, ICommentService commentService, IMovieService movieService, IUserService userService, IFavouriteMovieService favouriteMovieService, IApiMovieProvider apiMovieProvider, SettingService settingService)
+        public MovieResultController(ICommentService commentService, IMovieService movieService, IUserService userService, IFavouriteMovieService favouriteMovieService, MoviesHelper moviesHelper)
         {
-            _logger = logger;
             _commentService = commentService;
             _movieService = movieService;
             _userService = userService;
             _favouriteMovieService = favouriteMovieService;
-            _apiMovieProvider = apiMovieProvider;
-            _settingService = settingService;
+            _moviesHelper = moviesHelper;
         }
-        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false, int id = 0)
-        {
-            SharedViewModel sharedViewModel = new SharedViewModel
-            {
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie, _settingService.ApiKey)),
-                EditComment = editComment,
-                IsInFavourite = inFavourite,
-                CommentId = id
-            };
-            return View($"{view}", sharedViewModel);
-        }
-
-
+        
         private string GetCurrentUserName()
         {
             ClaimsPrincipal currentUser = User;
@@ -89,7 +66,9 @@ namespace MoviesLibrary.Web.Controllers
             };
             _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
 
-            return await ReturnResult(movieTitle, "Views/Shared/MovieResult.cshtml", inFavourite: true);
+            return View("Views/Shared/MovieResult.cshtml", await  _moviesHelper.GetMovieViewModel(movieTitle, inFavourite: true));
+
+           // return await _moviesHelper(movieTitle, "Views/Shared/MovieResult.cshtml", inFavourite: true);
 
 
         }
@@ -124,7 +103,10 @@ namespace MoviesLibrary.Web.Controllers
             };
 
             _commentService.AddComment(comment1);
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+
+
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
 
         }
 
@@ -144,7 +126,10 @@ namespace MoviesLibrary.Web.Controllers
                 _commentService.DeleteComment(_commentService.GetById(commentId));
                 
             }
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
+            
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
         [Authorize]
@@ -156,16 +141,20 @@ namespace MoviesLibrary.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> EditComment(int commentId, string userName, string movie, string body, bool isInFavourite, bool editComment)
+        public async Task<IActionResult> EditComment(int commentId, string userName, string movie, bool isInFavourite, bool editComment)
         {
             if (GetCurrentUserName() == userName)
             {
-                return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite, editComment: editComment, 
-                    id: commentId);
+                return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite, 
+                    editComment: editComment, id: commentId));
+
+                //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite, editComment: editComment, 
+                //    id: commentId);
 
             }
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
 
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
         [Authorize]
@@ -183,8 +172,10 @@ namespace MoviesLibrary.Web.Controllers
             {
                 _commentService.EditComment(commentId, commentBody);
             }
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
 
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
+
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
     }

@@ -11,6 +11,7 @@ using MoviesLibrary.APIProviders;
 using MoviesLibrary.BusinessLogic.Interfaces;
 using MoviesLibrary.DataAccess.Entities;
 using MoviesLibrary.Web.Models;
+using MoviesLibrary.Web.Helpers;
 
 namespace MoviesLibrary.Web.Controllers
 {
@@ -18,28 +19,18 @@ namespace MoviesLibrary.Web.Controllers
     public class FavMoviesController : Controller
     {
         private readonly IApiMovieProvider _apiMovieProvider;
-        private readonly ICommentService _commentService;
         private readonly IFavouriteMovieService _favouriteMovieService;
         private readonly SettingService _settingService;
+        private readonly MoviesHelper _moviesHelper;
 
-        public FavMoviesController(IApiMovieProvider apiMovieProvider, ICommentService commentService, IFavouriteMovieService favouriteMovieService, SettingService settingService)
+        public FavMoviesController(IApiMovieProvider apiMovieProvider, IFavouriteMovieService favouriteMovieService, SettingService settingService, MoviesHelper moviesHelper)
         {
             _apiMovieProvider = apiMovieProvider;
-            _commentService = commentService;
             _favouriteMovieService = favouriteMovieService;
             _settingService = settingService;
+            _moviesHelper = moviesHelper;
         }
-        private async Task<IActionResult> ReturnResult(string movie, string view, bool inFavourite = false, bool editComment = false)
-        {
-            SharedViewModel sharedViewModel = new SharedViewModel
-            {
-                MovieComments = (await _commentService.GetCommentsByMovieTitle(movie)).ToList(),
-                ResultById = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie, _settingService.ApiKey)),
-                EditComment = editComment,
-                IsInFavourite = inFavourite
-            };
-            return View($"{view}", sharedViewModel);
-        }
+
         public async Task<IActionResult> Favourite()
         {
             ClaimsPrincipal currentUser = User;
@@ -65,7 +56,9 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FavouriteMovieResult(string movie)
         {
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: true));
+
+            // return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
         }
 
         [HttpGet]
@@ -79,7 +72,9 @@ namespace MoviesLibrary.Web.Controllers
         public async Task<IActionResult> RemoveFromFavourite(string movie)
         {
             await _favouriteMovieService.DeleteFavouriteMovie(movie);
-            return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie));
+
+            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
         }
 
     }

@@ -33,7 +33,7 @@ namespace MoviesLibrary.Web.Controllers
             return View("Categories");
         }
 
-        public async Task<IActionResult> GetByGenreAction(string genre, int page)
+        public async Task<IActionResult> GetByGenre(string genre, int page)
         {
            
             var genreEnum = Convert.ToInt32((Genres)Enum.Parse(typeof(Genres), genre));
@@ -66,14 +66,14 @@ namespace MoviesLibrary.Web.Controllers
 
                 if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
-                    return View(view, await _moviesHelper.GetMovieViewModel(movie, inFavourite: true));
+                    return View(view, await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: true));
 
                     //return View(view, await GetMovieViewModel(movie, inFavourite:true));
                     //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
                 }
             }
 
-            return View(view, await _moviesHelper.GetMovieViewModel(movie));
+            return View(view, await _moviesHelper.GetMovieViewModel(movie, null));
 
             //return View(view, await GetMovieViewModel(movie));
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");

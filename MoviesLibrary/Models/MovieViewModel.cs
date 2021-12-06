@@ -12,5 +12,6 @@ namespace MoviesLibrary.Web.Models
         public bool IsInFavourite { get; set; }
         public bool EditComment { get; set; }
         public int CommentId { get; set; }
+        public string CurrentUserName { get; set; }
     }
 }

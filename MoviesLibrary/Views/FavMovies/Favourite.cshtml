@@ -1,13 +1,12 @@
 ﻿@using MoviesLibrary.Models;
 @model List<FullMovieResult>
- <span style="display:inline">
+ <div style="display:inline-block">
         @for (int i = 0; i < Model.Count; i++)
         {
             <form method="post" style="display:inline">
-                <input type="hidden" name="movie" value=@Model[i].Id />
-                <button type="submit" class="alert-dark" asp-controller="FavMovies" asp-action="FavouriteMovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model[i].PosterPath));width:200px; height:300px;"></button>
+                <button type="submit" class="alert-dark" asp-controller="FavMovies" asp-route-movie=@Model[i].Id  asp-action="FavouriteMovieResult" style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model[i].PosterPath));width:200px; height:300px;"></button>
 
             </form>
         }
-</span>
+</div>
 

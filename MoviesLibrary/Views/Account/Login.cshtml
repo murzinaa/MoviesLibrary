@@ -1,26 +1,21 @@
 ﻿@model MoviesLibrary.DataAccess.Registration.Login
 
-<h2>Log In</h2>
-<form method="post" asp-controller="Account" asp-action="Login"
-      asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <input asp-for="RememberMe" />
-        <label asp-for="RememberMe"></label>
+<center>
+    <h3>Log In</h3>
+    <form method="post" asp-controller="Account" asp-action="Login"
+          asp-route-returnUrl="@Model.ReturnUrl">
+        <div asp-validation-summary="ModelOnly"></div>
+            <label asp-for="Email"></label><br />
+            <input asp-for="Email" type="email" class="form-control" placeholder="Type your e-mail here" /> <br />
+            <span asp-validation-for="Email"></span>
 
-    </div>
-    <div>
-        <input type="submit" value="Log in" />
-    </div>
-</form>
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" class="form-control" placeholder="Type your password here" /><br />
+            <span asp-validation-for="Password"></span>
+
+            <input type="submit" class="btn btn-outline-info" value="Log in" />
+
+        
+    </form>
+</center>
 

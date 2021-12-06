@@ -10,7 +10,7 @@ namespace MoviesLibrary.Web.Controllers
 {
     public class MovieResultController : Controller
     {
-         private readonly ICommentService _commentService;
+        private readonly ICommentService _commentService;
         private readonly IUserService _userService;
         private readonly IMovieService _movieService;
         private readonly IFavouriteMovieService _favouriteMovieService;
@@ -68,7 +68,7 @@ namespace MoviesLibrary.Web.Controllers
             };
             _favouriteMovieService.AddFavouriteMovie(favouriteMovie);
 
-            return View("Views/Shared/MovieResult.cshtml", await  _moviesHelper.GetMovieViewModel(movieTitle, inFavourite: true));
+            return View("Views/Shared/MovieResult.cshtml", await  _moviesHelper.GetMovieViewModel(movieTitle, userName, inFavourite: true));
 
            // return await _moviesHelper(movieTitle, "Views/Shared/MovieResult.cshtml", inFavourite: true);
 
@@ -105,7 +105,7 @@ namespace MoviesLibrary.Web.Controllers
             };
 
             _commentService.AddComment(comment1);
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
 
 
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
@@ -123,13 +123,14 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteComment(int commentId, string userName, string movie, bool isInFavourite)
         {
-            if (_userHelper.GetCurrentUser() == userName)
+            string userEmail = _userHelper.GetCurrentUser();
+            if (userEmail == userName)
             {
                 _commentService.DeleteComment(_commentService.GetById(commentId));
                 
             }
             
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
 
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
@@ -145,16 +146,17 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditComment(int commentId, string userName, string movie, bool isInFavourite, bool editComment)
         {
-            if (_userHelper.GetCurrentUser() == userName)
+            string userEmail = _userHelper.GetCurrentUser();
+            if (userEmail == userName)
             {
-                return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite, 
+                return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite, 
                     editComment: editComment, id: commentId));
 
                 //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite, editComment: editComment, 
                 //    id: commentId);
 
             }
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
 
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
@@ -170,11 +172,12 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEditedComment(int commentId, string userName, string movie, string commentBody, bool isInFavourite)
         {
-            if (_userHelper.GetCurrentUser() == userName)
+            string userEmail = _userHelper.GetCurrentUser();
+            if (userEmail == userName)
             {
                 _commentService.EditComment(commentId, commentBody);
             }
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: isInFavourite));
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
 
 
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);

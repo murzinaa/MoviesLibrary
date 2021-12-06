@@ -1,0 +1,6 @@
+﻿.wrapper {
+    display: grid;
+    grid-template-columns: 30% 50%;
+    align-items: center
+}
+

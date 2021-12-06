@@ -20,7 +20,7 @@ namespace MoviesLibrary.Web.Helpers
             _apiMovieProvider = apiMovieProvider;
             _settingService = settingService;
         }
-        public async Task<MovieViewModel> GetMovieViewModel(string movie, bool inFavourite = false, bool editComment = false, int id = 0)
+        public async Task<MovieViewModel> GetMovieViewModel(string movie, string userName, bool inFavourite = false, bool editComment = false, int id = 0)
         {
             var movieViewModel = new MovieViewModel
             {
@@ -28,7 +28,8 @@ namespace MoviesLibrary.Web.Helpers
                 MovieList = await _apiMovieProvider.GetMoviesListById(FilmApiUrls.ReturnUrlForMovieResult(movie, _settingService.ApiKey)),
                 EditComment = editComment,
                 IsInFavourite = inFavourite, 
-                CommentId = id
+                CommentId = id,
+                CurrentUserName = userName
             };
             return movieViewModel;
         }

@@ -1,34 +1,47 @@
 ﻿@model MoviesLibrary.Web.Models.MovieViewModel
-<h4>@Model.MovieList.OriginalTitle</h4>
-<img src=@("https://image.tmdb.org/t/p/original"+@Model.MovieList.PosterPath) width="200" height="300" alt=" " />
-<p><b>Original language: </b>@Model.MovieList.OriginalLanguage</p>
-<p> <b>Genres: </b> 
-    @for (int genre = 0; genre < Model.MovieList.Genres.Count ; genre++)
-    {
-        @Model.MovieList.Genres[genre].Name
-        if (genre < Model.MovieList.Genres.Count-1)
-        {
-            @(", ")
-        }
-    }
- </p>
-<p><b>Description: </b>@Model.MovieList.Overview</p>
-<p><b>Popularity: </b>@Model.MovieList.Popularity</p>
-<p><b>Release Date: </b>@Model.MovieList.ReleaseDate</p>
-<p><b>Average Vote: </b>@Model.MovieList.VoteAverage</p>
-<p><b>Count of Votes: </b>@Model.MovieList.VoteCount</p>
+<link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+
+<center><h3>@Model.MovieList.OriginalTitle</h3></center>
+<br />
+<br />
+<div class="wrapper">
+    <img src=@("https://image.tmdb.org/t/p/original"+@Model.MovieList.PosterPath) width="300" height="450" alt=" " />
+    <div>
+        <p><b>Original language: </b>@Model.MovieList.OriginalLanguage</p>
+        <p>
+            <b>Genres: </b>
+            @for (int genre = 0; genre < Model.MovieList.Genres.Count; genre++)
+            {
+                @Model.MovieList.Genres[genre].Name
+                if (genre < Model.MovieList.Genres.Count - 1)
+                {
+                    @(", ")
+                }
+            }
+        </p>
+        <p><b>Description: </b>@Model.MovieList.Overview</p>
+        <p><b>Popularity: </b>@Model.MovieList.Popularity</p>
+        <p><b>Release Date: </b>@Model.MovieList.ReleaseDate</p>
+        <p><b>Average Vote: </b>@Model.MovieList.VoteAverage</p>
+        <p><b>Count of Votes: </b>@Model.MovieList.VoteCount</p>
+        <br />
+    </div>
+</div>
+
+<br />
 <br />
 
 
 
 @if (Model.MovieList.Videos.Results.Count > 0)
 {
-    <iframe width="560" height="315"
-            src=@("https://www.youtube.com/embed/"+Model.MovieList.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
-            autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-    <br />
-    <br />
+    <p style="font-size:24px; margin-left:70px">You can watch the trailer below:</p>
+        <iframe width="560" height="315"
+                src=@("https://www.youtube.com/embed/"+Model.MovieList.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
+                autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <br />
+        <br />
 }
 
 @if (Model.IsInFavourite)
@@ -53,7 +66,7 @@ else
 
 <form method="post">
     <h4>Add a comment</h4>
-    <input type="text" class="form-control" name="comment" required placeholder="Type your comment here" /><br />
+    <input type="text" class="form-control" name="comment" required placeholder="Type your comment here..." /><br />
     <input type="hidden" name="movie" value=@Model.MovieList.Id />
     <input type="submit" class="btn btn-outline-info" value="Add" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
 </form>
@@ -69,8 +82,12 @@ else
             <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
             <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
             <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
-            <input type="submit" class="btn btn-outline-success" value="Edit" asp-route-isInFavourite=@Model.IsInFavourite asp-route-editComment=@true asp-controller="MovieResult" asp-action="EditComment" />
-            <input type="submit" class="btn btn-outline-danger" value="Delete" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="DeleteComment" /><br /><br />
+            @if (Model.CurrentUserName == Model.MovieComments[i].UserName)
+            {
+                <input type="submit" class="btn btn-outline-success" value="Edit" asp-route-isInFavourite=@Model.IsInFavourite asp-route-editComment=@true asp-controller="MovieResult" asp-action="EditComment" />
+                <input type="submit" class="btn btn-outline-danger" value="Delete" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="DeleteComment" /><br /><br />
+
+            }
         </form>
     }
     else
@@ -84,6 +101,5 @@ else
 
         </form>
     }
-
-
+<hr />
 }

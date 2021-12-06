@@ -22,13 +22,15 @@ namespace MoviesLibrary.Web.Controllers
         private readonly IFavouriteMovieService _favouriteMovieService;
         private readonly SettingService _settingService;
         private readonly MoviesHelper _moviesHelper;
+        private readonly UserHelper _userHelper;
 
-        public FavMoviesController(IApiMovieProvider apiMovieProvider, IFavouriteMovieService favouriteMovieService, SettingService settingService, MoviesHelper moviesHelper)
+        public FavMoviesController(IApiMovieProvider apiMovieProvider, IFavouriteMovieService favouriteMovieService, SettingService settingService, MoviesHelper moviesHelper, UserHelper userHelper)
         {
             _apiMovieProvider = apiMovieProvider;
             _favouriteMovieService = favouriteMovieService;
             _settingService = settingService;
             _moviesHelper = moviesHelper;
+            _userHelper = userHelper;
         }
 
         public async Task<IActionResult> Favourite()
@@ -56,7 +58,8 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FavouriteMovieResult(string movie)
         {
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, inFavourite: true));
+            string userEmail = _userHelper.GetCurrentUser();
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: true));
 
             // return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
         }
@@ -71,8 +74,9 @@ namespace MoviesLibrary.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromFavourite(string movie)
         {
+            string userEmail = _userHelper.GetCurrentUser();
             await _favouriteMovieService.DeleteFavouriteMovie(movie);
-            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie));
+            return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail));
 
             //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
         }

@@ -1,5 +1,9 @@
 ﻿@model MoviesLibrary.Web.Models.MovieViewModel
-<link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+
+<link href="~/css/PrimaryStyle.css" rel="stylesheet" />
+<link href="~/css/MovieResultStyle.css" rel="stylesheet" />
+
+<script src="https://kit.fontawesome.com/36aab4c235.js" crossorigin="anonymous"></script>
 
 <center><h3>@Model.MovieList.OriginalTitle</h3></center>
 <br />
@@ -36,19 +40,19 @@
 @if (Model.MovieList.Videos.Results.Count > 0)
 {
     <p style="font-size:24px; margin-left:70px">You can watch the trailer below:</p>
-        <iframe width="560" height="315"
-                src=@("https://www.youtube.com/embed/"+Model.MovieList.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
+    <iframe width="560" height="315"
+            src=@("https://www.youtube.com/embed/"+Model.MovieList.Videos.Results[0].Key) title="YouTube video player" frameborder="0" allow="accelerometer;
                 autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
-        <br />
-        <br />
+    </iframe>
+    <br />
+    <br />
 }
 
 @if (Model.IsInFavourite)
 {
     <form method="POST">
         <input type="hidden" name="movie" value=@Model.MovieList.Id />
-        <button type="submit" class="btn btn-outline-info" asp-route-isInFavourite=@true asp-controller="FavMovies" asp-action="RemoveFromFavourite">Remove from favourite</button>
+        <button type="submit" class="button primaryButton" asp-route-isInFavourite=@true asp-controller="FavMovies" asp-action="RemoveFromFavourite">Remove from favourite</button>
     </form>
 }
 else
@@ -57,7 +61,7 @@ else
     <h6>If you liked the movie, you can add it to your favorites</h6>
     <form method="POST" id="favouriteForm">
         <input type="hidden" name="movieTitle" value=@Model.MovieList.Id />
-        <button type="submit" class="btn btn-outline-info" asp-route-isInFavourite=@false asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
+        <button type="submit" class="button primaryButton" asp-route-isInFavourite=@false asp-controller="MovieResult" asp-action="AddToFavourite">Add to favourite</button>
     </form>
 
 }
@@ -68,38 +72,49 @@ else
     <h4>Add a comment</h4>
     <input type="text" class="form-control" name="comment" required placeholder="Type your comment here..." /><br />
     <input type="hidden" name="movie" value=@Model.MovieList.Id />
-    <input type="submit" class="btn btn-outline-info" value="Add" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
+    <input type="submit" class="button primaryButton" value="Add" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="AddComment" /><br /><br />
 </form>
+
+
+
+
+
+
 
 @for (int i = 0; i < Model.MovieComments.Count; i++)
 {
 
-    <h6>@Model.MovieComments[i].UserName</h6>
-    <p style="display:block">@Model.MovieComments[i].Body</p>
-    if (!Model.EditComment)
-    {
-        <form method="post">
-            <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
-            <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
-            <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
-            @if (Model.CurrentUserName == Model.MovieComments[i].UserName)
+        <h6>@Model.MovieComments[i].UserName</h6>
+        <p style="display:block">@Model.MovieComments[i].Body</p>
+        @if (!Model.EditComment)
+        {
+            <form method="post">
+                <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
+                <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
+                <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
+                @if (Model.CurrentUserName == Model.MovieComments[i].UserName)
+                {
+                    <button type="submit" class="btn1 editButton" value="Edit" asp-route-isInFavourite=@Model.IsInFavourite asp-route-editComment=@true asp-controller="MovieResult" asp-action="EditComment" ><i class="far fa-edit"></i></button>
+                    <button type="submit" class="btn1 deleteButton" value="Delete" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="DeleteComment"><i class="far fa-trash-alt"></i></button><br /><br />
+
+                        }
+</form>
+        }
+        else
+        {
+            if (Model.CommentId == Model.MovieComments[i].Id)
             {
-                <input type="submit" class="btn btn-outline-success" value="Edit" asp-route-isInFavourite=@Model.IsInFavourite asp-route-editComment=@true asp-controller="MovieResult" asp-action="EditComment" />
-                <input type="submit" class="btn btn-outline-danger" value="Delete" asp-route-isInFavourite=@Model.IsInFavourite asp-controller="MovieResult" asp-action="DeleteComment" /><br /><br />
+                <form method="post">
+                    <input type="text" class="form-control" name="commentBody" required />
+                    <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
+                    <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
+                    <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle /><br />
+                    <button type="submit" class="button primaryButton" asp-controller="MovieResult" asp-route-isInFavourite=@Model.IsInFavourite asp-action="SaveEditedComment" >Save</button><br /><br />
 
+                </form>
             }
-        </form>
-    }
-    else
-    {
-        <form method="post">
-            <input type="text" class="form-control" name="commentBody" required />
-            <input type="hidden" name="commentId" value=@Model.MovieComments[i].Id />
-            <input type="hidden" name="userName" value=@Model.MovieComments[i].UserName />
-            <input type="hidden" name="movie" value=@Model.MovieComments[i].MovieTitle />
-            <input type="submit" class="btn btn-outline-info" value="Save" asp-controller="MovieResult" asp-route-isInFavourite=@Model.IsInFavourite asp-action="SaveEditedComment" /><br /><br />
 
-        </form>
-    }
-<hr />
+        }
+
+    <hr />
 }

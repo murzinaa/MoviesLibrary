@@ -1,4 +1,7 @@
 ﻿@model Registration
+
+ <link href="~/css/PrimaryStyle.css" rel="stylesheet" type="text/css" />
+
 <center><h3>User Registration</h3></center>
 
 <form method="post" asp-controller="Account" asp-action="Register">
@@ -24,6 +27,6 @@
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
     <div>
-        <input type="submit" class="btn btn-outline-info" value="Register" />
+        <input type="submit" class="button primaryButton" value="Register" />
     </div>
 </form>

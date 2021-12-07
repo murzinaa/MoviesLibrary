@@ -1,0 +1,22 @@
+﻿.button {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    /*padding: 8px 25px;*/
+    border: 2px solid #00b4cc;
+    border-radius: 12px;
+    background: #ffffff;
+    font: normal normal normal 16px arial;
+    color: #00b4cc;
+}
+
+.button:hover, .button:focus {
+    background: #00b4cc;
+    border: 2px solid #00b4cc;
+    color: #ffffff;
+}
+
+.primaryButton {
+    padding: 8px 25px;
+}
+

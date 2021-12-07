@@ -1,5 +1,7 @@
 ﻿@model MoviesLibrary.DataAccess.Registration.Login
 
+ <link href="~/css/PrimaryStyle.css" rel="stylesheet" type="text/css" />
+
 <center>
     <h3>Log In</h3>
     <form method="post" asp-controller="Account" asp-action="Login"
@@ -13,7 +15,7 @@
             <input asp-for="Password" class="form-control" placeholder="Type your password here" /><br />
             <span asp-validation-for="Password"></span>
 
-            <input type="submit" class="btn btn-outline-info" value="Log in" />
+            <input type="submit" class="button primaryButton" value="Log in" />
 
         
     </form>

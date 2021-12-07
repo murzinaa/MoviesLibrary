@@ -2,18 +2,28 @@
 @{
     ViewBag.Title = "Search";
 }
-<form method="post">
-    <center>
-        <h4>Enter the title of the film</h4><br />
-        <input type="text" class="form-control" name="movie" placeholder="Type the title of the movie here" required /><br />
-        <input type="submit" class="btn btn-outline-info" value="Find the film" /><br /><br />
 
-    </center>
-</form>
+<script src="https://use.fontawesome.com/18f444fe4b.js"></script>
+
+<link rel="stylesheet" href="~/css/SearchStyle.css" />
+<link rel="stylesheet" href="~/css/PrimaryStyle.css" />
+
+<div class="wrap">
+    <center><h4>Enter the title of the film:</h4></center><br />
+    <form method="post">
+        <div class="search">
+
+            <input type="text" class="searchInput" name="movie" placeholder="Enter the title of the movie">
+            <button type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+            </button><br /><br />  <br />
+        </div>
+    </form>
+</div>
 
 <form method="GET">
     <center>
-        <button type="submit" class="btn btn-outline-info" asp-controller="Home" asp-action="Index">Home</button>
+        <button type="submit" class="button primarySearchButton" asp-controller="Home" asp-action="Index">Home</button>
     </center>
 </form>
 

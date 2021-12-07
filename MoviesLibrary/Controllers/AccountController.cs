@@ -45,10 +45,16 @@ namespace MoviesLibrary.Web.Controllers
             }
             return View(model);
         }
+        //[HttpGet]
+        //public IActionResult Login(string returnUrl = null)
+        //{
+        //    return View(new Login { ReturnUrl = returnUrl });
+        //}
+
         [HttpGet]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login()
         {
-            return View(new Login { ReturnUrl = returnUrl });
+            return View(new Login { ReturnUrl = "Views/Home/Index.cshtml" });
         }
 
         [HttpPost]

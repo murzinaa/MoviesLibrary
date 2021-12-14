@@ -32,7 +32,9 @@ namespace MoviesLibrary.BusinessLogic.Services
             var favMovies = from fm in _context.FavouriteMovies
                             select fm;
             var favMoviesList = await favMovies.Where(fm => fm.MovieId.Equals(moviesList.Id)).FirstAsync();
+
             var result = await _context.FavouriteMovies.FindAsync(favMoviesList.Id);
+
             _context.Remove(result);
             _context.SaveChanges();
         }

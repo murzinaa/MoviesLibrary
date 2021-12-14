@@ -31,15 +31,6 @@ namespace MoviesLibrary.BusinessLogic.Services
                 _context.Movies.Add(movie);
                 _context.SaveChanges();
             }
-            //var movies = from m in _context.Users
-            //            select m;
-            //if ((await movies.Where(u => u.UserName.Contains(movie.Title)).ToListAsync()).Count == 0)
-            //{
-            //    _context.Movies.Add(movie);
-            //    _context.SaveChanges();
-            //}
-            //_context.Movies.Add(movie);
-            //_context.SaveChanges();
         }
 
         public async Task<Movie> GetMovieByTitle(string title)
@@ -48,7 +39,6 @@ namespace MoviesLibrary.BusinessLogic.Services
                          select m;
             result = result.Where(m => m.Title!.Contains(title));
             return await result.FirstOrDefaultAsync();
-            //throw new System.NotImplementedException();
         }
 
         public async Task<Movie> GetCurrentMovie(Movie movie)

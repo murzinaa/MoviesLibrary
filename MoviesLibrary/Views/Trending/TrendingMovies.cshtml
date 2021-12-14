@@ -4,30 +4,30 @@
 <link href="~/css/PrimaryStyle.css" rel="stylesheet" />
 
 <div style="display:inline-block">
-    @for (int i = 0; i < Model.results.Count; i++)
+    @for (int i = 0; i < Model.Results.Count; i++)
     {
         <form method="post" style="display:inline">
-            <input type="hidden" name="movie" value=@Model.results[i].id />
-            <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult" asp-route-page=@Model.page style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.results[i].poster_path));width:200px; height:300px;"></button>
+            <input type="hidden" name="movie" value=@Model.Results[i].Id />
+            <button type="submit" class="alert-dark" name="movie" asp-controller="Categories" asp-action="MovieResult" asp-route-Page=@Model.Page style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.Results[i].PosterPath));width:200px; height:300px;"></button>
 
         </form>
     }
 
 </div>
 
-@if (Model.page == Model.total_pages)
+@if (Model.Page == Model.TotalPages)
 {
     <center>
         <form method="POST">
-            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page - 1)>Previous Page</button>
+            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-Page=@(Model.Page - 1)>Previous Page</button>
         </form>
     </center>
 }
-else if (Model.page == 1)
+else if (Model.Page == 1)
 {
     <center>
         <form method="POST">
-            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page + 1)>Next Page</button>
+            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-Page=@(Model.Page + 1)>Next Page</button>
         </form>
     </center>
 }
@@ -35,8 +35,8 @@ else
 {
     <center>
         <form method="POST">
-            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page - 1)>Previous Page</button>
-            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-page=@(Model.page+1)>Next Page</button>
+            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-Page=@(Model.Page - 1)>Previous Page</button>
+            <button type="submit" class="button primaryButton" asp-controller="Trending" asp-action="TrendingMovies"  asp-route-Page=@(Model.Page+1)>Next Page</button>
         </form>
     </center>
 }

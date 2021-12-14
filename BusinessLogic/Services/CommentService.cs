@@ -54,9 +54,5 @@ namespace MoviesLibrary.BusinessLogic.Services
         {
             return _comments.Find(id);
         }
-        public List<Comment> GetCommentsByUserId(int userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -8,7 +8,6 @@ namespace MoviesLibrary.BusinessLogic.Interfaces
         Task AddMovie(Movie movie);
         Task<Movie> GetMovieByTitle(string title);
         void EditMovie(Movie movie);
-        //List<FavouriteMovie> GetByUserId(int userId);
         Task<Movie> GetCurrentMovie(Movie movie);
     }
 }

@@ -26,7 +26,7 @@ namespace MoviesLibrary.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email };
+                User user = new User { Email = model.Email, UserName = model.Email, FullName = model.FullName };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -45,11 +45,6 @@ namespace MoviesLibrary.Web.Controllers
             }
             return View(model);
         }
-        //[HttpGet]
-        //public IActionResult Login(string returnUrl = null)
-        //{
-        //    return View(new Login { ReturnUrl = returnUrl });
-        //}
 
         [HttpGet]
         public IActionResult Login()
@@ -63,8 +58,7 @@ namespace MoviesLibrary.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))

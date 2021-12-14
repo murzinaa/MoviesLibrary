@@ -10,9 +10,6 @@ namespace MoviesLibrary.DataAccess.Entities
         {
             Comments = new HashSet<Comment>();
         }
-
-        //public int Id { get; set; }
-        //public string UserName { get; set; }
         public string FullName { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

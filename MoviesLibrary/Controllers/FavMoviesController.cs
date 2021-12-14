@@ -60,8 +60,6 @@ namespace MoviesLibrary.Web.Controllers
         {
             string userEmail = _userHelper.GetCurrentUser();
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: true));
-
-            // return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
         }
 
         [HttpGet]
@@ -77,8 +75,6 @@ namespace MoviesLibrary.Web.Controllers
             string userEmail = _userHelper.GetCurrentUser();
             await _favouriteMovieService.DeleteFavouriteMovie(movie);
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail));
-
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
         }
 
     }

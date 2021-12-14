@@ -2,9 +2,10 @@
 
  <script src="https://use.fontawesome.com/18f444fe4b.js"></script>
 
- <link rel="stylesheet" href="~/css/SearchStyle.css" />
+ <link rel="stylesheet" href="~/css/SearchStyle.css"  type="text/css"/>
+ <link href="~/css/PrimaryStyle.css" rel="stylesheet" type="text/css" />
 
-@if (Model.SearchMovieResult.Results.Count == 0)
+@if (Model.SearchMovieResult.Results == null || Model.SearchMovieResult.Results.Count == 0)
 {
         <div>
             <center>
@@ -18,7 +19,7 @@
             <form method="post">
                 <div class="search">
 
-                    <input type="text" class="searchInput" name="movie" placeholder="Try again... Enter the title of the movie">
+                    <input type="text" class="searchInput" name="movie" placeholder="Try again... Enter the title of the movie" required>
                     <button type="submit" class="searchButton">
                         <i class="fa fa-search"></i>
                     </button><br /><br />
@@ -27,13 +28,14 @@
         </div>
 }
 
-
+else
+{
 <div style="display:inline-block">
 @for (int i = 0; i < Model.SearchMovieResult.Results.Count; i++)
 {
             <form method="post" style="display:inline">
                 <button type="submit" class="alert-dark" asp-controller="Categories" asp-action="MovieResult" asp-route-movie=@Model.SearchMovieResult.Results[i].Id
-                        style="background: url(@("https://image.tmdb.org/t/p/w200"+@Model.SearchMovieResult.Results[i].PosterPath));width:200px; height:300px;" ;></button>
+                        style="background: url(@("https://image.tmdb.org/t/p/w200" + @Model.SearchMovieResult.Results[i].PosterPath));width:200px; height:300px;" ;></button>
 
             </form>
 }
@@ -61,7 +63,8 @@
         <center>
             <form method="POST">
                 <button type="submit" class="button primaryButton" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page - 1)>Previous Page</button>
-                <button type="submit" class="button primaryButton" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page+1)>Next Page</button>
+                <button type="submit" class="button primaryButton" asp-controller="Search" asp-action="Search" asp-route-movie=@Model.MovieTitle asp-route-page=@(Model.SearchMovieResult.Page + 1)>Next Page</button>
             </form>
         </center>
+        }
     }

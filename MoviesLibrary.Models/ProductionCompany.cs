@@ -15,10 +15,6 @@ namespace MoviesLibrary.Models
 
         [JsonPropertyName("origin_country")]
         public string OriginCountry { get; set; }
-        //public int id { get; set; }
-        //public object logo_path { get; set; }
-        //public string name { get; set; }
-        //public string origin_country { get; set; }
 
     }
 }

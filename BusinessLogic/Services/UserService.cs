@@ -38,7 +38,6 @@ namespace MoviesLibrary.BusinessLogic.Services
                 return await users.Where(u => u.UserName.Contains(user.UserName)).FirstOrDefaultAsync();
             }
             return usersList[0];
-            //throw new System.NotImplementedException();
         }
     }
 }

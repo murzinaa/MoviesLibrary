@@ -27,12 +27,6 @@ namespace MoviesLibrary.Web.Controllers
             _userHelper = userHelper;
         }
 
-        //private string GetCurrentUserName()
-        //{
-        //    ClaimsPrincipal currentUser = User;
-        //    var userName = currentUser.FindFirst(ClaimTypes.Email).Value;
-        //    return userName;
-        //}
         [HttpGet]
         public IActionResult AddToFavourite()
         {
@@ -70,7 +64,6 @@ namespace MoviesLibrary.Web.Controllers
 
             return View("Views/Shared/MovieResult.cshtml", await  _moviesHelper.GetMovieViewModel(movieTitle, userName, inFavourite: true));
 
-           // return await _moviesHelper(movieTitle, "Views/Shared/MovieResult.cshtml", inFavourite: true);
 
 
         }
@@ -107,9 +100,6 @@ namespace MoviesLibrary.Web.Controllers
             _commentService.AddComment(comment1);
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
 
-
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
-
         }
 
         [Authorize]
@@ -131,8 +121,6 @@ namespace MoviesLibrary.Web.Controllers
             }
             
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
-
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
         [Authorize]
@@ -152,13 +140,8 @@ namespace MoviesLibrary.Web.Controllers
                 return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite, 
                     editComment: editComment, id: commentId));
 
-                //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite, editComment: editComment, 
-                //    id: commentId);
-
             }
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
-
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
         [Authorize]
@@ -178,9 +161,6 @@ namespace MoviesLibrary.Web.Controllers
                 _commentService.EditComment(commentId, commentBody);
             }
             return View("Views/Shared/MovieResult.cshtml", await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: isInFavourite));
-
-
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite: isInFavourite);
         }
 
     }

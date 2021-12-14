@@ -6,27 +6,20 @@
 
 <form method="post" asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
-    <div>
         <label asp-for="Email"></label><br />
         <input asp-for="Email" type="email" class="form-control" placeholder="Type your e-mail here"/><br />
         <span asp-validation-for="Email"></span>
-    </div>
-    <div>
+
         <label asp-for="FullName"></label><br />
         <input asp-for="FullName" class="form-control" placeholder="Type your name and surname here"/><br />
         <span asp-validation-for="FullName"></span>
-    </div>
-    <div>
+
         <label asp-for="Password"></label><br />
         <input asp-for="Password" class="form-control" placeholder="Type your password here"/><br />
         <span asp-validation-for="Password"></span>
-    </div>
-    <div>
+
         <label asp-for="PasswordConfirm"></label><br />
         <input asp-for="PasswordConfirm" class="form-control" placeholder="Confirm your password" /><br /><br />
         <span asp-validation-for="PasswordConfirm"></span>
-    </div>
-    <div>
         <input type="submit" class="button primaryButton" value="Register" />
-    </div>
 </form>

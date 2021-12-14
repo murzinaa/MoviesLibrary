@@ -20,7 +20,7 @@
     height: 45px;
     border-radius: 5px 0 0 5px;
     outline: none;
-    color: white;
+    color: #00B4CC;
 }
 
 .searchInput:focus {
@@ -32,8 +32,8 @@
     height: 45px;
     border: 1px solid #00B4CC;
     background: #00B4CC;
+    color: white;
     text-align: center;
-    color: #fff;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
     font-size: 20px;

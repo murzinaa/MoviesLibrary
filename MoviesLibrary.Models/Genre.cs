@@ -6,9 +6,9 @@ namespace MoviesLibrary.Models
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
         [JsonPropertyName("name")]
         public string Name { get; set; }
-        //public int id { get; set; }
-        //public string name { get; set; }
+
     }
 }

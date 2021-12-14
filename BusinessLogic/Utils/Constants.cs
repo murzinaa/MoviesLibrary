@@ -1,6 +1,4 @@
-﻿using MoviesLibrary.BusinessLogic.Services;
-
-namespace MoviesLibrary.BusinessLogic.Utils
+﻿namespace MoviesLibrary.BusinessLogic.Utils
 {
     public class Constants
     {

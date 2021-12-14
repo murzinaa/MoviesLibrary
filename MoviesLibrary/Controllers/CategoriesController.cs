@@ -67,16 +67,10 @@ namespace MoviesLibrary.Web.Controllers
                 if (_favouriteMovieService.GetByUserNameAndMovie(userEmail, movie))
                 {
                     return View(view, await _moviesHelper.GetMovieViewModel(movie, userEmail, inFavourite: true));
-
-                    //return View(view, await GetMovieViewModel(movie, inFavourite:true));
-                    //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml", inFavourite:true);
                 }
             }
 
             return View(view, await _moviesHelper.GetMovieViewModel(movie, null));
-
-            //return View(view, await GetMovieViewModel(movie));
-            //return await ReturnResult(movie, "Views/Shared/MovieResult.cshtml");
 
         }
 
